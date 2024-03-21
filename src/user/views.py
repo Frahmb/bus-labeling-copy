@@ -85,3 +85,13 @@ def activate(request, uidb64, token):
         return render(request, 'registration/activation_done.html')
     else:
         return HttpResponse('Activation link is invalid!')
+
+
+def GenerateReportView(request):
+    if request.method == 'POST':
+        # Assuming you have a form to select a model
+        model_name = request.POST.get('model_name')
+        # Logic to generate the report based on the selected model
+        # For demonstration, let's just return a simple message
+        return HttpResponse(f"Report for model: {model_name} generated.")
+    return render(request, 'admin/generate_report_popup.html')

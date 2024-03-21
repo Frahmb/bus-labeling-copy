@@ -11,6 +11,7 @@ from django.conf import settings
 from .models import BUSDataset
 
 
+
 class UploadingDatasetForm(forms.Form):
     name = forms.CharField(
         label=_('Dataset Name'), max_length=120, required=True)
@@ -117,3 +118,130 @@ class UploadingDatasetForm(forms.Form):
 
         self.cleaned_data['data_file'] = base_name
         return self.cleaned_data
+
+'''Class added by Jackson Baldwin for Senior Capstone Design - Spring 2024
+Form used to split a dataset into training, validation, and test sets to be used by the retrain model feature
+Code additionally found in admin.py under "splitting", and under split_dataset.html
+'''
+class SplittingDatasetForm(forms.Form):
+
+    #selecting an ID for the newly split dataset
+    name = forms.CharField(
+        label=_('Select a Split Dataset ID'), max_length=120, required=True)
+
+    public_permission = forms.ChoiceField(label=_('Public Permission'),
+        choices=BUSDataset.PERM)
+
+    # Add a new field for private databases
+    private_database = forms.ModelChoiceField(
+        #queryset=BUSDataset.objects.filter(permission = 'private'),
+        queryset=BUSDataset.objects.all(),
+        label='Select Dataset',
+        empty_label="Choose a dataset",
+        required=True, # Ensure this is set to True
+    )
+
+
+    training_percentage = forms.IntegerField(
+        label='Training Percentage',
+        min_value=0,
+        max_value=100,
+        required=True,
+        help_text='Enter the percentage for the training set (0-100).'
+    )
+    validation_percentage = forms.IntegerField(
+        label='Validation Percentage',
+        min_value=0,
+        max_value=100,
+        required=True,
+        help_text='Enter the percentage for the validation set (0-100).'
+    )
+    test_percentage = forms.IntegerField(
+        label='Test Percentage',
+        min_value=0,
+        max_value=100,
+        required=True,
+        help_text='Enter the percentage for the test set (0-100).'
+    )
+    def clean_name(self):
+        name = self.cleaned_data.get('name')
+        if len(name) <  4:
+            raise forms.ValidationError(
+                _('Dataset name must be at least  4 characters long'))
+
+        if BUSDataset.objects.filter(name=name).count() >  0:
+            raise forms.ValidationError(
+                _('The name "%(name)" is already taken. Try picking a new one'),
+                params={'name': name}
+            )   
+
+        if not re.match(r'^\w[\w\d ]*$', name):
+            raise forms.ValidationError(
+                _('The name should only contains letters, numbers and spaces. '
+                  'The first character must be letters.')
+            )
+
+        return name
+
+    def clean(self):
+        name = self.cleaned_data.get('name')
+        if name is None:
+            return
+        cleaned_data = super().clean()
+        training_percentage = cleaned_data.get('training_percentage')
+        validation_percentage = cleaned_data.get('validation_percentage')
+        test_percentage = cleaned_data.get('test_percentage')
+
+        total_percentage = training_percentage + validation_percentage + test_percentage
+        if total_percentage !=  100:
+            raise forms.ValidationError('The sum of training, validation, and test percentages must equal  100%.')
+
+        self.cleaned_data['data_file'] = name
+        return self.cleaned_data
+
+
+class ModelRetrainForm(forms.Form):
+    
+    datasets = forms.ModelChoiceField(
+        queryset=BUSDataset.objects.all(),
+        label='Select Dataset',
+        empty_label="Choose a dataset"
+    )
+    epochs = forms.IntegerField(
+        label='Number of Epochs',
+        min_value=1,
+        required=True
+    )
+    learning_rate = forms.FloatField(
+        label='Learning Rate',
+        min_value=0.0,
+        required=True
+    )
+    
+    name = forms.CharField(
+    label=_('Select a Split Dataset ID'), max_length=120, required=True)
+
+    def clean(self):
+        cleaned_data = super().clean()
+
+    
+
+    def clean_name(self):
+        name = self.cleaned_data.get('name')
+        if len(name) <  4:
+            raise forms.ValidationError(
+                _('Dataset name must be at least  4 characters long'))
+
+        if BUSDataset.objects.filter(name=name).count() >  0:
+            raise forms.ValidationError(
+                _('The name "%(name)" is already taken. Try picking a new one'),
+                params={'name': name}
+            )
+
+        if not re.match(r'^\w[\w\d ]*$', name):
+            raise forms.ValidationError(
+                _('The name should only contains letters, numbers and spaces. '
+                  'The first character must be letters.')
+            )
+
+        return name

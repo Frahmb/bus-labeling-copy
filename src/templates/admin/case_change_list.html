@@ -4,13 +4,13 @@
 {% block object-tools-items %}
 {{ block.super }}
     <li><a href="{% static 'download/MIDA_Labeling_System_Guideline.pdf' %}">
-        {% trans 'Select Model' %}</a></li>
-
-
-    <li><a href="{% static 'download/MIDA_Labeling_System_Guideline.pdf' %}">
         {% trans 'Guideline' %}</a></li>
+    <li><a href="{% url 'generate_report_popup' %}">
+        {% trans 'Get Results' %}</a></li>
     <li><a href="{% url 'labeling:uploading' %}">
         {% trans 'Upload Dataset' %}</a></li>
+    <li><a href="{% url 'labeling:splitting' %}">
+        {% trans 'Split Dataset' %}</a></li>
     {% if has_change_permission %}
     <li><a href="/masking/cropping/{{ image_model_name }}">
         {% trans 'Cropping' %}</a></li>

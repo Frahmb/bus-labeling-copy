@@ -1,0 +1,46 @@
+{% extends "admin/base_site.html" %}
+{% load i18n static %}
+
+{% block title %} Generate Report | {{ site_title|default:_('Django site admin') }}{% endblock %}
+{% block extrastyle %}
+    {{ block.super }}
+    {{ form.media }}
+    <style>
+        .form-row {
+            padding:  4px  0;
+            width:  100%;
+            border-bottom: none;
+        }
+
+        .form-row label {
+            padding-right:  0.5em;
+            line-height:  2em;
+            font-size:  1em;
+            clear: both;
+            color: #333;
+        }
+
+        .form-row input, .form-row select {
+            clear: both;
+            margin:  8px;
+            width:  100%;
+            box-sizing: border-box;
+        }
+    </style>
+{% endblock %}
+
+
+
+{% block content %}
+<form method="post" action="{% url 'generate_report_popup' %}">
+    {% csrf_token %}
+    <select name="model_name">
+        <option value="model1">Model 1</option>
+        <option value="model2">Model 2</option>
+        <!-- Add more options as needed -->
+    </select>
+    <button type="submit">Generate Report</button>
+</form>
+{% endblock %}
+
+{% block sidebar %}{% endblock %}

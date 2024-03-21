@@ -33,6 +33,12 @@
     <a href="{% url 'labeling:uploading' %}" class="common_btn">
         {% trans 'Upload Dataset' %}
     </a>
+    <a href="{% url 'labeling:splitting' %}" class="common_btn">
+        {% trans 'Split Dataset' %}
+    </a>
+    <a href="{% url 'labeling:retrain' %}" class="common_btn">
+        {% trans 'Retrain Models' %}
+    </a>
     <!-- <a href="/admin/auxiliary/uploadingfile/add/?_popup=1" class="common_btn">
         {% trans 'Upload Other Dataset' %}
     </a>

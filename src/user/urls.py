@@ -1,7 +1,7 @@
 from django.urls import path
 from django.conf import settings
 from django.contrib.auth import views as auth_views
-from .views import SignUpView, activate
+from .views import SignUpView, GenerateReportView, activate
 
 
 urlpatterns = [
@@ -30,5 +30,11 @@ urlpatterns = [
         'activation/<uidb64>/<token>/',
         activate,
         name='activation'
+    ),
+    path(
+        'generate_report_popup/', 
+         GenerateReportView,
+         name='generate_report_popup'
     )
+
 ]

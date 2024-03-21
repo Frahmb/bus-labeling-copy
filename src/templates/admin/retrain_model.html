@@ -1,0 +1,81 @@
+{% extends "admin/index.html" %}
+{% load i18n static %}
+
+{% block title %}Retrain Model | {{ site_title|default:_('Django site admin') }}{% endblock %}
+{% block extrastyle %}
+    {{ block.super }}
+    {{ form.media }}
+    <style>
+        .form-row {
+            padding:  4px  0;
+            width:  100%;
+            border-bottom: none;
+        }
+
+        .form-row label {
+            padding-right:  0.5em;
+            line-height:  2em;
+            font-size:  1em;
+            clear: both;
+            color: #333;
+        }
+
+        .form-row input, .form-row select {
+            clear: both;
+            margin:  8px;
+            width:  100%;
+            box-sizing: border-box;
+        }
+    </style>
+{% endblock %}
+
+
+{% block content %}
+    <form action="" method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <!-- ... existing form fields ... -->
+
+        <div class="form-row">
+            {{ form.datasets.label_tag }} {{ form.datasets }}
+            {{ form.datasets.errors }}
+        </div>
+
+        <div class="form-row">
+            {{ form.epochs.label_tag }} {{ form.epochs }}
+            {{ form.epochs.errors }}
+        </div>
+
+        <div class="form-row">
+            {{ form.learning_rate.label_tag }} {{ form.learning_rate }}
+            {{ form.learning_rate.errors }}
+        </div>
+
+        <!-- ... other form fields ... -->
+
+
+    <div class="form-row">
+        {{ form.private_database.label_tag }} {{ form.private_database }}
+        <!-- Add other form fields as needed -->
+    </div>
+
+    <div class="form-row">
+        {{ form.public_permission.label_tag }} {{ form.public_permission }}
+        {{ form.public_permission.errors }}
+    </div>
+    <form action="" method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="form-row">
+            {{ form.name.label_tag }} {{ form.name }}
+            {{ form.name.errors }}
+        </div>
+        
+        <div class="form-row">
+            <input type="submit" value="Submit">
+        </div>
+    </form>
+{% endblock %}
+
+
+
+{% block sidebar %}{% endblock %}
+
