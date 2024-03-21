@@ -1,0 +1,43 @@
+
+[
+    {
+        "id": 1, "tumor_type": "B",
+        "birads": [
+            {
+                "shape": 0, "orientation": 1, "echo_pattern": 1, "posterior_feature": 2,
+                "calcification": 3, "assessment": "4A", "margin": [0], "creator": "user01"
+            },
+                        {
+                "shape": 1, "orientation": 1, "echo_pattern": 1, "posterior_feature": 2,
+                "calcification": 3, "assessment": "4A", "margin": [0], "creator": "user02"
+            }
+        ],
+        "images": [
+            {
+                "image": "folder/images/case1.png",
+                "masking": [
+                    {
+                        "cropping": "[31,14,507,375]",
+                        "tumor": "[[294,149],[294,149], ... ,[299,148],[299,148]]",
+                        "tissue": "[
+                            [[0,24],[2,24], ... ,[562,22],[562,22]],
+                            [[0,88],[6,88], ... ,[560,91],[562,91]],
+                            [[0,219],[0,219], ... ,[561,211],[562,211]],
+                            [[0,354],[7,354], ... ,[556,339],[562,339]]
+                        ]",
+                        "creator": "user01"
+                    }
+                ],
+                ...
+            }
+        ],
+    },
+    {
+        "id": 2,
+        ...
+    },
+    ...
+]
+
+
+

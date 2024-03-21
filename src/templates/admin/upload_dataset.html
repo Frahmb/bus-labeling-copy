@@ -1,0 +1,55 @@
+{% extends "admin/index.html" %}
+{% load i18n static %}
+
+{% block title %}Upload Dataset | {{ site_title|default:_('Django site admin') }}{% endblock %}
+{% block extrastyle %}
+    {{ block.super }}
+    {{ form.media }}
+    <style>
+        .form-row {
+            padding: 4px 0;
+            width: 100%;
+            border-bottom: none;
+        }
+
+        .form-row label {
+            padding-right: 0.5em;
+            line-height: 2em;
+            font-size: 1em;
+            clear: both;
+            color: #333;
+        }
+
+        .form-row input, .form-row select {
+            clear: both;
+            margin: 8px;
+            width: 100%;
+            box-sizing: border-box;
+        }
+    </style>
+{% endblock %}
+
+{% block content %}
+    <form action="" method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    <div class="form-row">
+        {{ form.name.label_tag }} {{ form.name }}
+        {{ form.name.errors }}
+    </div>
+    <div class="form-row">
+        {{ form.data_file.label_tag }} (<a href="{% static 'download/uploading_dataset_README.pdf' %}">Data Preparation README</a> | <a download href="{% static 'download/Sample_Dataset.zip' %}">Download sample dataset</a>)
+        {{ form.data_file }}
+        {{ form.data_file.errors }}
+    </div>
+    <div class="form-row">
+        {{ form.public_permission.label_tag }} {{ form.public_permission }}
+        {{ form.public_permission.errors }}
+    </div>
+    <div class="form-row">
+        <input type="submit" value="Submit">
+    </div>
+    </form>
+{% endblock %}
+
+{% block sidebar %}{% endblock %}
+

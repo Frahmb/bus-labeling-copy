@@ -1,0 +1,125 @@
+{% extends 'labeling/masking_base.html' %}
+{% load i18n %}
+
+{% block action_tools %}
+    <button id='start_crop' class="btn btn-success btn-sm">{% trans "Start Crop" %}
+    </button>
+    <button id='end_crop' class="btn btn-danger btn-sm"
+            style="display: none">{% trans "End Crop" %}
+    </button>
+    <div class = "divider"></div>
+
+{% endblock %}
+
+{% block script %}
+    <script>
+        class Layer extends BaseLayer {
+            constructor(size) {
+                super(size);
+                this.crop = [0, 0, size[0], size[1]];
+                this.drawCrop();
+            }
+
+            startCropEvent(e) {
+                
+                
+                let ox, oy;
+                if (e.type === 'mousedown') {
+                    ox = e.offsetX;
+                    oy = e.offsetY;
+                    console.log(ox,oy,scale);
+                } else if (e.type === 'touchstart') {
+                    ox = (e.touches[0].clientX - this.canvas.get(0).getBoundingClientRect().left) / scale;
+                    oy = (e.touches[0].clientY - this.canvas.get(0).getBoundingClientRect().top) / scale;
+                    console.log(ox,oy,scale);
+                }
+
+                this.crop = [ox, oy, 0, 0];
+                this.canvas.on('mousemove touchmove', e => this.cropEvent(e));
+                this.canvas.on('mouseup touchend', e => this.endCropEvent());
+            }
+
+            cropEvent(e) {
+                this.saved = false;
+                let ox, oy;
+                if (e.type === 'mousemove') {
+                    ox = e.offsetX;
+                    oy = e.offsetY;
+                } else if (e.type === 'touchmove') {
+                    e.preventDefault();
+                    ox = (e.touches[0].clientX - this.canvas.get(0).getBoundingClientRect().left) / scale;
+                    oy = (e.touches[0].clientY - this.canvas.get(0).getBoundingClientRect().top) / scale;
+                }
+
+                this.crop[2] = ox - this.crop[0];
+                this.crop[3] = oy - this.crop[1];
+                this.reDraw();
+            }
+
+            endCropEvent() {
+                this.canvas.off('mousemove touchmove');
+                this.canvas.off('mouseup touchend');
+
+            }
+
+            startCrop() {
+                this.endCrop();
+                this.reDraw();
+                this.canvas.on('mousedown touchstart', e => this.startCropEvent(e));
+            }
+
+            endCrop() {
+                this.canvas.off('mousedown touchstart');
+                
+            }
+
+            drawCrop() {
+                if (this.crop.length === 4) {
+                    this.ctx.fillStyle = 'rgba(255, 0, 0, 0.2)';
+                    this.ctx.fillRect(...this.crop);
+                }
+            }
+
+            reDraw() {
+                this.cleanBoard();
+                this.drawCrop();
+            }
+
+            export() {
+                if (this.crop.length === 4) {
+                    return JSON.stringify(this.crop);
+                } else {
+                    alert("{% trans 'Cropping cannot be blank, please complete it.' %}");
+                    return false;
+                }
+            }
+
+            import() {
+                const data = '{{ mask.cropping|safe }}';
+                if (data.length > 0) {
+                    this.crop = JSON.parse(data);
+                    this.reDraw();
+                }
+            }
+        }
+
+        $(function () {
+            let start_crop = $('#start_crop');
+            let end_crop = $('#end_crop');
+
+            start_crop.click(function () {
+                start_crop.toggle();
+                end_crop.toggle();
+                curr_layer.startCrop();
+                zoom_toggle = false;
+            })
+
+            end_crop.click(function () {
+                start_crop.toggle();
+                end_crop.toggle();
+                curr_layer.endCrop();
+                zoom_toggle = true;
+            })
+        });
+    </script>
+{% endblock %}

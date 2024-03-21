@@ -1,0 +1,22 @@
+{% extends 'admin/change_list.html' %}
+{% load i18n static %}
+
+{% block object-tools-items %}
+{{ block.super }}
+    <li><a href="{% static 'download/MIDA_Labeling_System_Guideline.pdf' %}">
+        {% trans 'Select Model' %}</a></li>
+
+
+    <li><a href="{% static 'download/MIDA_Labeling_System_Guideline.pdf' %}">
+        {% trans 'Guideline' %}</a></li>
+    <li><a href="{% url 'labeling:uploading' %}">
+        {% trans 'Upload Dataset' %}</a></li>
+    {% if has_change_permission %}
+    <li><a href="/masking/cropping/{{ image_model_name }}">
+        {% trans 'Cropping' %}</a></li>
+    <li><a href="/masking/tumor/{{ image_model_name }}">
+        {% trans 'Mask Tumor' %}</a></li>
+    <li><a href="/masking/tissue/{{ image_model_name }}">
+        {% trans 'Mask Tissue' %}</a></li>
+    {% endif %}
+{% endblock %}

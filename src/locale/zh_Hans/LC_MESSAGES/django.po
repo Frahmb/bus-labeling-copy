@@ -1,0 +1,2035 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2023-06-22 15:44-0700\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+
+#: MIDA/settings.py:125
+msgid "English"
+msgstr "英文"
+
+#: MIDA/settings.py:126
+msgid "Chinese"
+msgstr "中文"
+
+#: auxiliary/models.py:39
+msgid "Name"
+msgstr ""
+
+#: auxiliary/models.py:40 labeling/models.py:242
+msgid "Description"
+msgstr "描述"
+
+#: auxiliary/models.py:41
+#, fuzzy
+#| msgid "Is Cover Image"
+msgid "Cover Image"
+msgstr "是否为封面"
+
+#: auxiliary/models.py:44
+#, fuzzy
+#| msgid "End Draw"
+msgid "End Date"
+msgstr "结束绘制"
+
+#: auxiliary/models.py:45
+msgid "Evaluation Function"
+msgstr ""
+
+#: auxiliary/models.py:47
+#, fuzzy
+#| msgid "Labeling"
+msgid "Labels"
+msgstr "标记"
+
+#: auxiliary/models.py:49
+msgid "Download Link"
+msgstr ""
+
+#: auxiliary/models.py:61
+#, fuzzy
+#| msgid "Completed"
+msgid "Competition"
+msgstr "已完成"
+
+#: auxiliary/models.py:63
+msgid "Submitter"
+msgstr ""
+
+#: auxiliary/models.py:64
+msgid "Content"
+msgstr ""
+
+#: auxiliary/models.py:65
+msgid "Score"
+msgstr ""
+
+#: auxiliary/models.py:66
+msgid "Submit Time"
+msgstr ""
+
+#: labeling/actions.py:42
+#, fuzzy
+#| msgid "Export All Labeled"
+msgid "Export your labels"
+msgstr "导出所有人的标记"
+
+#: labeling/actions.py:49
+#, fuzzy
+#| msgid "Export All Labeled"
+msgid "Export all labels"
+msgstr "导出所有人的标记"
+
+#: labeling/admin.py:30 labeling/admin.py:31
+msgid "MIDA Labeling System"
+msgstr "MIDA标记系统"
+
+#: labeling/admin.py:32
+msgid "Labeling System"
+msgstr "标记系统"
+
+#: labeling/admin.py:286
+msgid "Other Information"
+msgstr "其他信息"
+
+#: labeling/admin.py:333
+#, fuzzy
+#| msgid "BIRADS Label"
+msgid "BI-RADS Label"
+msgstr "BIRADS标记"
+
+#: labeling/admin.py:369
+msgid "BIRADS Label Status"
+msgstr "BI-RADS标记状态"
+
+#: labeling/admin.py:396
+msgid "Remaining Cropping"
+msgstr "未完成剪裁"
+
+#: labeling/admin.py:401
+msgid "Remaining Tumor Mask"
+msgstr "未完成肿瘤标记"
+
+#: labeling/admin.py:406
+msgid "Remaining Tissue Mask"
+msgstr "未完成组织标记"
+
+#: labeling/admin.py:453
+msgid "Case Link"
+msgstr "病例链接"
+
+#: labeling/apps.py:9
+#, fuzzy
+#| msgid "Dataset"
+msgid "My Dataset"
+msgstr "我的数据集"
+
+#: labeling/forms.py:16 labeling/models.py:340
+#, fuzzy
+#| msgid "Dataset"
+msgid "Dataset Name"
+msgstr "数据集"
+
+#: labeling/forms.py:17
+msgid "Zipped Dataset File"
+msgstr "压缩文件"
+
+#: labeling/forms.py:21
+msgid "Public Permission"
+msgstr "公开权限"
+
+#: labeling/forms.py:28
+msgid "Dataset name must be at lease 4 characters long"
+msgstr "数据集名必须包含至少4个字符"
+
+#: labeling/forms.py:32
+#, fuzzy
+#| msgid "The name \"{name}\" is already taken. Try picking a new one"
+msgid "The name \"%(name)\" is already taken. Try picking a new one"
+msgstr "用户名 \"{name}\" 已被占用. 请重新尝试一个新的用户名"
+
+#: labeling/forms.py:38
+msgid ""
+"The name should only contains letters, numbers and spaces. The first "
+"character must be letters."
+msgstr "名字只能包含字母，数字和空格，第一个符号必须为字母"
+
+#: labeling/forms.py:73
+msgid "The zipped file must includes label.csv"
+msgstr "压缩文件中必须包含label.csv文件"
+
+#: labeling/forms.py:82
+msgid "The first column must be \"case_id\""
+msgstr "第一列必须为 \"case_id\""
+
+#: labeling/forms.py:85
+msgid "The case_id must be integer, e.g. 1, 2, 3 ..."
+msgstr "case_id 必须是整数, 比如： 1, 2, 3 ..."
+
+#: labeling/forms.py:89
+msgid "The case_id must be 0 or positive number (>= 0) instead of negative"
+msgstr "case_id 必须是0或者大于0的正数 (>=0)，而不能是负数"
+
+#: labeling/forms.py:96
+msgid "The second column must be \"image\""
+msgstr "第二列必须是\"image\""
+
+#: labeling/forms.py:99
+msgid "The image column must be string type"
+msgstr "image列必须是字符串类型"
+
+#: labeling/forms.py:106
+msgid "The third column must be \"tumor_type\""
+msgstr "第三列必须是 \"tumor_type\""
+
+#: labeling/forms.py:109
+msgid "The tumor_type column must be string type"
+msgstr "tumor_type列必须是字符串类型"
+
+#: labeling/forms.py:114
+msgid ""
+"The tumor_type must be one of following options: N(normal), B(benign), "
+"M(malignant), O(others), U(unknown)"
+msgstr ""
+"tumor_type 必须是以下选项之一: N(normal), B(benign), M(malignant), "
+"O(others), U(unknown)"
+
+#: labeling/models.py:21 labeling/models.py:43 labeling/models.py:50
+#: labeling/models.py:56 labeling/models.py:66 labeling/models.py:74
+#: labeling/models.py:82
+msgid "UNKNOWN"
+msgstr "未知"
+
+#: labeling/models.py:22
+msgid "Circumscribed"
+msgstr "光整"
+
+#: labeling/models.py:23
+msgid "Not circumscribed"
+msgstr "不光整"
+
+#: labeling/models.py:24
+msgid "Indistinct"
+msgstr "模糊"
+
+#: labeling/models.py:25
+msgid "Angular"
+msgstr "成角"
+
+#: labeling/models.py:26
+msgid "Microlobulated"
+msgstr "微小分叶"
+
+#: labeling/models.py:27
+msgid "Spiculated"
+msgstr "毛刺"
+
+#: labeling/models.py:30 labeling/models.py:104
+msgid "Margin"
+msgstr "边缘"
+
+#: labeling/models.py:44
+msgid "Oval"
+msgstr "椭圆形"
+
+#: labeling/models.py:45
+msgid "Round"
+msgstr "圆形"
+
+#: labeling/models.py:46
+msgid "Irregular"
+msgstr "不规则"
+
+#: labeling/models.py:51
+msgid "Parallel"
+msgstr "平行"
+
+#: labeling/models.py:52
+msgid "Not Parallel"
+msgstr "非平行"
+
+#: labeling/models.py:57
+msgid "Anechoic"
+msgstr "无回声"
+
+#: labeling/models.py:58
+msgid "Hyperechoic"
+msgstr "高回声"
+
+#: labeling/models.py:59
+msgid "Complex cystic and solid"
+msgstr "囊实性复合回声"
+
+#: labeling/models.py:60
+msgid "Hypoechoic"
+msgstr "低回声"
+
+#: labeling/models.py:61
+msgid "Isoechoic"
+msgstr "等回声"
+
+#: labeling/models.py:62
+msgid "Heterogeneous"
+msgstr "不均匀回声"
+
+#: labeling/models.py:67
+msgid "No posterior features"
+msgstr "后方回声无改变"
+
+#: labeling/models.py:68
+msgid "Enhancement"
+msgstr "后方回声增强"
+
+#: labeling/models.py:69
+msgid "Shadowing"
+msgstr "后方声影"
+
+#: labeling/models.py:70
+msgid "Combined pattern"
+msgstr "后方混合性改变"
+
+#: labeling/models.py:75
+msgid "Calcifications in a mass"
+msgstr "肿块内钙化"
+
+#: labeling/models.py:76
+msgid "Calcifications outside of a mass"
+msgstr "肿块外钙化"
+
+#: labeling/models.py:77
+msgid "Intraductal calcifications"
+msgstr "导管内钙化"
+
+#: labeling/models.py:78
+msgid "NONE"
+msgstr "无"
+
+#: labeling/models.py:83
+msgid "Category 0: Incomplete - Need Additional Imaging"
+msgstr "类别0：不能全面评估，需要进一步成像"
+
+#: labeling/models.py:84
+msgid "Category 1: Negative"
+msgstr "类别1：阴性"
+
+#: labeling/models.py:85
+msgid "Category 2: Benign"
+msgstr "类别2：良性"
+
+#: labeling/models.py:86
+msgid "Category 3: Probably Benign"
+msgstr "类别3：可能良性"
+
+#: labeling/models.py:87
+msgid "Category 4: Suspicious"
+msgstr "类别4：可疑恶性"
+
+#: labeling/models.py:88
+msgid "Category 4A: Low suspicion for malignancy"
+msgstr "类别4A：低度可疑恶性"
+
+#: labeling/models.py:89
+msgid "Category 4B: Moderate suspicion for malignancy"
+msgstr "类别4B：中度可疑恶性"
+
+#: labeling/models.py:90
+msgid "Category 4C: High suspicion for malignancy"
+msgstr "类别4C：高度可疑恶性"
+
+#: labeling/models.py:92
+msgid "Category 5: Highly suggestive of malignancy"
+msgstr "类别5：高度可能恶性"
+
+#: labeling/models.py:93
+msgid "Category 6: Known biopsy-proven malignancy"
+msgstr "类别6：已活检验证为恶性"
+
+#: labeling/models.py:97
+msgid "Shape"
+msgstr "形态"
+
+#: labeling/models.py:100
+msgid "Orientation"
+msgstr "方位"
+
+#: labeling/models.py:105
+msgid "Echo Pattern"
+msgstr "回声模式"
+
+#: labeling/models.py:109
+msgid "Posterior Features"
+msgstr "后方回声特性"
+
+#: labeling/models.py:112
+msgid "Calcification"
+msgstr "钙化"
+
+#: labeling/models.py:115
+msgid "Assessment"
+msgstr "评估"
+
+#: labeling/models.py:118 labeling/models.py:342
+msgid "Creator"
+msgstr "创建者"
+
+#: labeling/models.py:119
+msgid "Completed"
+msgstr "已完成"
+
+#: labeling/models.py:135 labeling/models.py:285 labeling/models.py:287
+#: templates/admin/case_change_list.html:12
+#: templates/labeling/masking_base.html:73
+msgid "Cropping"
+msgstr "剪裁"
+
+#: labeling/models.py:136
+msgid "Tumor Mask"
+msgstr "肿瘤标记"
+
+#: labeling/models.py:137
+msgid "Tissue Mask"
+msgstr "组织标记"
+
+#: labeling/models.py:155
+msgid "BIRADS"
+msgstr "BIRADS"
+
+#: labeling/models.py:180 labeling/models.py:235
+msgid "Image/Annotation Preview"
+msgstr "图像/标记 预览"
+
+#: labeling/models.py:185
+msgid "Image Count"
+msgstr "图像数"
+
+#: labeling/models.py:190
+msgid "Applicable Image Count"
+msgstr "可应用图像数"
+
+#: labeling/models.py:219
+msgid "Image"
+msgstr "图像"
+
+#: labeling/models.py:220 templates/admin/app_list.html:45
+#: templates/labeling/masking_base.html:5
+msgid "Masking"
+msgstr "标记"
+
+#: labeling/models.py:221
+msgid "Applicable"
+msgstr "可应用"
+
+#: labeling/models.py:223 templates/labeling/masking_base.html:112
+msgid "Case"
+msgstr "病例"
+
+#: labeling/models.py:297 labeling/models.py:299
+#: templates/admin/case_change_list.html:14
+msgid "Mask Tumor"
+msgstr "标记肿瘤"
+
+#: labeling/models.py:309 labeling/models.py:311
+#: templates/admin/case_change_list.html:16
+msgid "Mask Tissue"
+msgstr "标记组织"
+
+#: labeling/models.py:343
+#, fuzzy
+#| msgid "Dataset"
+msgid "Dataset Path"
+msgstr "数据集"
+
+#: labeling/models.py:353
+msgid "Permission"
+msgstr "权限"
+
+#: private/apps.py:7
+#, fuzzy
+#| msgid "Dataset"
+msgid "Private Dataset"
+msgstr "数据集"
+
+#: public/apps.py:7
+#, fuzzy
+#| msgid "Dataset"
+msgid "Public Dataset"
+msgstr "数据集"
+
+#: templates/admin/app_index.html:9
+#: templates/registration/activation_done.html:6
+#: templates/registration/password_change_done.html:6
+#: templates/registration/password_change_form.html:7
+#: templates/registration/password_reset_complete.html:6
+#: templates/registration/password_reset_confirm.html:7
+#: templates/registration/password_reset_done.html:6
+#: templates/registration/password_reset_form.html:7
+#: templates/registration/registration_done.html:6
+msgid "Home"
+msgstr "主页"
+
+#: templates/admin/app_index.html:21 templates/admin/case_change_list.html:9
+#: templates/admin/index.html:34
+#, fuzzy
+#| msgid "Dataset"
+msgid "Upload Dataset"
+msgstr "数据集"
+
+#: templates/admin/app_list.html:8
+#, python-format
+msgid "Models in the %(name)s application"
+msgstr "Models in the %(name)s application"
+
+#: templates/admin/app_list.html:51
+msgid "Setting"
+msgstr "设置"
+
+#: templates/admin/base.html:6
+#, fuzzy
+#| msgid "Home"
+msgid "Homepage"
+msgstr "主页"
+
+#: templates/admin/base.html:11
+#: templates/registration/password_change_done.html:3
+#: templates/registration/password_change_form.html:4
+#, fuzzy
+#| msgid "Orientation"
+msgid "Documentation"
+msgstr "方位"
+
+#: templates/admin/base.html:15 templates/admin/case_change_list.html:7
+msgid "Guideline"
+msgstr ""
+
+#: templates/admin/base.html:18
+#: templates/registration/password_change_done.html:3
+#: templates/registration/password_change_form.html:4
+#, fuzzy
+#| msgid "Password"
+msgid "Change password"
+msgstr "密码"
+
+#: templates/admin/base.html:20
+#: templates/registration/password_change_done.html:3
+#: templates/registration/password_change_form.html:4
+#, fuzzy
+#| msgid "Log in"
+msgid "Log out"
+msgstr "登陆"
+
+#: templates/admin/index.html:37
+#, fuzzy
+#| msgid "Dataset"
+msgid "Upload Other Dataset"
+msgstr "数据集"
+
+#: templates/admin/index.html:40
+msgid "View Other Datasets"
+msgstr ""
+
+#: templates/admin/index.html:44
+msgid "User statistics"
+msgstr ""
+
+#: templates/admin/index.html:45
+msgid "Total users"
+msgstr ""
+
+#: templates/admin/index.html:46
+#, fuzzy
+#| msgid "Orientation"
+msgid "Recent users"
+msgstr "最近的操作"
+
+#: templates/admin/index.html:56
+#, fuzzy
+#| msgid "Orientation"
+msgid "Recent actions"
+msgstr "最近的操作"
+
+#: templates/admin/index.html:57
+msgid "My actions"
+msgstr "我的操作"
+
+#: templates/admin/index.html:61
+msgid "None available"
+msgstr ""
+
+#: templates/admin/index.html:75
+msgid "Unknown content"
+msgstr "未知内容"
+
+#: templates/admin/login.html:23 templates/admin/register.html:27
+#: templates/registration/password_change_form.html:21
+msgid "Please correct the error below."
+msgstr "请更正以下错误"
+
+#: templates/admin/login.html:23 templates/admin/register.html:27
+#: templates/registration/password_change_form.html:21
+msgid "Please correct the errors below."
+msgstr "请更正以下错误"
+
+#: templates/admin/login.html:39 templates/admin/register.html:43
+#, python-format
+msgid ""
+"You are authenticated as %(username)s, but are not authorized to access this "
+"page. Would you like to login to a different account?"
+msgstr ""
+
+#: templates/admin/login.html:59
+#, fuzzy
+#| msgid "Forgotten your password or username?"
+msgid "Forget your password or username?"
+msgstr "忘记密码或用户名？"
+
+#: templates/admin/login.html:63 templates/admin/register.html:89
+#: templates/registration/password_reset_complete.html:18
+msgid "Log in"
+msgstr "登陆"
+
+#: templates/admin/login.html:67 templates/admin/register.html:85
+msgid "Sign up"
+msgstr "注册"
+
+#: templates/admin/pagination.html:12 templates/admin/search_form.html:9
+#, fuzzy
+#| msgid "Show Mask"
+msgid "Show all"
+msgstr "显示标记"
+
+#: templates/admin/pagination.html:15 templates/admin/submit_line.html:6
+#: templates/admin/submit_line.html:9 templates/labeling/masking_base.html:115
+msgid "Save"
+msgstr "保存"
+
+#: templates/admin/search_form.html:7
+msgid "Search by ID"
+msgstr ""
+
+#: templates/admin/search_form.html:9
+#, python-format
+msgid "%(counter)s result"
+msgid_plural "%(counter)s results"
+msgstr[0] ""
+
+#: templates/admin/search_form.html:9
+#, python-format
+msgid "%(full_result_count)s total"
+msgstr ""
+
+#: templates/admin/submit_line.html:5
+#, fuzzy
+#| msgid "Save & Next"
+msgid "Save and Next"
+msgstr "保存 & 下一个"
+
+#: templates/admin/submit_line.html:12
+msgid "Delete"
+msgstr ""
+
+#: templates/admin/submit_line.html:14
+#, fuzzy
+#| msgid "Save & Next"
+msgid "Save as new"
+msgstr "保存 & 下一个"
+
+#: templates/admin/submit_line.html:15
+msgid "Save and add another"
+msgstr ""
+
+#: templates/admin/submit_line.html:16
+msgid "Save and continue editing"
+msgstr ""
+
+#: templates/admin/submit_line.html:16
+msgid "Save and view"
+msgstr ""
+
+#: templates/admin/submit_line.html:17
+#, fuzzy
+#| msgid "Close Mask"
+msgid "Close"
+msgstr "关闭标记"
+
+#: templates/admin/upload_dataset.html:4
+msgid "Django site admin"
+msgstr "Django 管理后台"
+
+#: templates/labeling/masking_base.html:82
+msgid "Tumor"
+msgstr "肿瘤"
+
+#: templates/labeling/masking_base.html:91
+msgid "Tissue"
+msgstr "组织"
+
+#: templates/labeling/masking_base.html:110
+msgid "Previous"
+msgstr "上一个"
+
+#: templates/labeling/masking_base.html:113
+msgid "Dataset"
+msgstr "数据集"
+
+#: templates/labeling/masking_base.html:119
+msgid "Save & Next"
+msgstr "保存 & 下一个"
+
+#: templates/labeling/masking_base.html:123
+msgid "Next"
+msgstr "下一个"
+
+#: templates/labeling/masking_base.html:197
+msgid "Saved Successfully!"
+msgstr ""
+
+#: templates/labeling/masking_base.html:223
+msgid "You have unsaved work!"
+msgstr "您有未保存的工作！"
+
+#: templates/labeling/masking_cropping.html:5
+msgid "Start Crop"
+msgstr "开始剪裁"
+
+#: templates/labeling/masking_cropping.html:8
+msgid "End Crop"
+msgstr "结束剪裁"
+
+#: templates/labeling/masking_cropping.html:73
+msgid "Cropping cannot be blank, please complete it."
+msgstr "剪裁不能为空，请完成。"
+
+#: templates/labeling/masking_tissue.html:5
+#: templates/labeling/masking_tumor.html:12
+msgid "Clean"
+msgstr "清除"
+
+#: templates/labeling/masking_tissue.html:6
+msgid "Clean All"
+msgstr "清除所有"
+
+#: templates/labeling/masking_tissue.html:12
+msgid "First"
+msgstr "第一"
+
+#: templates/labeling/masking_tissue.html:15
+msgid "Second"
+msgstr "第二"
+
+#: templates/labeling/masking_tissue.html:18
+msgid "Third"
+msgstr "第三"
+
+#: templates/labeling/masking_tissue.html:21
+msgid "Fourth"
+msgstr "第四"
+
+#: templates/labeling/masking_tissue.html:130
+msgid ""
+"'The first three tissues must be fully completed. ' + (i + 1) + ' is blank.'"
+msgstr "'前三层组织必须被标记， ' + (i + 1) + ' 是空的。'"
+
+#: templates/labeling/masking_tumor.html:5
+msgid "Start Draw"
+msgstr "开始绘制"
+
+#: templates/labeling/masking_tumor.html:8
+msgid "End Draw"
+msgstr "结束绘制"
+
+#: templates/labeling/masking_tumor.html:10
+msgid "Undo"
+msgstr "撤销"
+
+#: templates/labeling/masking_tumor.html:11
+msgid "Redo"
+msgstr "重做"
+
+#: templates/labeling/masking_tumor.html:13
+msgid "Show Mask"
+msgstr "显示标记"
+
+#: templates/labeling/masking_tumor.html:16
+msgid "Close Mask"
+msgstr "关闭标记"
+
+#: templates/labeling/masking_tumor.html:161
+msgid "Tumor masking cannot be blank."
+msgstr "肿瘤标记不能为空。"
+
+#: templates/registration/activation_done.html:7
+#, fuzzy
+#| msgid "Calcification"
+msgid "Activation"
+msgstr "钙化"
+
+#: templates/registration/activation_done.html:15
+msgid "Congratulations! Your account has been successfully activated."
+msgstr ""
+
+#: templates/registration/password_change_done.html:7
+#: templates/registration/password_change_form.html:8
+#, fuzzy
+#| msgid "Password"
+msgid "Password change"
+msgstr "密码"
+
+#: templates/registration/password_change_done.html:14
+#, fuzzy
+#| msgid "Your password is too long"
+msgid "Your password was changed."
+msgstr "您的密码太长"
+
+#: templates/registration/password_change_form.html:26
+msgid ""
+"Please enter your old password, for security’s sake, and then enter your new "
+"password twice so we can verify you typed it in correctly."
+msgstr ""
+
+#: templates/registration/password_change_form.html:54
+#: templates/registration/password_reset_confirm.html:32
+msgid "Change my password"
+msgstr ""
+
+#: templates/registration/password_reset_complete.html:7
+#: templates/registration/password_reset_done.html:7
+#: templates/registration/password_reset_form.html:8
+#, fuzzy
+#| msgid "Password"
+msgid "Password reset"
+msgstr "密码"
+
+#: templates/registration/password_reset_complete.html:16
+msgid "Your password has been set.  You may go ahead and log in now."
+msgstr ""
+
+#: templates/registration/password_reset_confirm.html:8
+#, fuzzy
+#| msgid "Password Confirmation"
+msgid "Password reset confirmation"
+msgstr "确认密码"
+
+#: templates/registration/password_reset_confirm.html:18
+msgid ""
+"Please enter your new password twice so we can verify you typed it in "
+"correctly."
+msgstr ""
+
+#: templates/registration/password_reset_confirm.html:24
+#, fuzzy
+#| msgid "Password"
+msgid "New password:"
+msgstr "密码"
+
+#: templates/registration/password_reset_confirm.html:29
+msgid "Confirm password:"
+msgstr ""
+
+#: templates/registration/password_reset_confirm.html:38
+msgid ""
+"The password reset link was invalid, possibly because it has already been "
+"used.  Please request a new password reset."
+msgstr ""
+
+#: templates/registration/password_reset_done.html:15
+msgid ""
+"We’ve emailed you instructions for setting your password, if an account "
+"exists with the email you entered. You should receive them shortly."
+msgstr ""
+
+#: templates/registration/password_reset_done.html:17
+msgid ""
+"If you don’t receive an email, please make sure you’ve entered the address "
+"you registered with, and check your spam folder."
+msgstr ""
+
+#: templates/registration/password_reset_email.html:2
+msgid "Hi"
+msgstr ""
+
+#: templates/registration/password_reset_email.html:4
+msgid ""
+"You're receiving this email because you requested a password reset for your "
+"user account at MIDA Labeling System."
+msgstr ""
+
+#: templates/registration/password_reset_email.html:6
+msgid "Please go to the following page and choose a new password:"
+msgstr ""
+
+#: templates/registration/password_reset_email.html:10
+msgid "Your username, in case you’ve forgotten:"
+msgstr ""
+
+#: templates/registration/password_reset_email.html:12
+msgid "Thanks for using our site!"
+msgstr ""
+
+#: templates/registration/password_reset_email.html:14
+#: templates/registration/registration_confirmation.html:8
+#, fuzzy
+#| msgid "MIDA Labeling System"
+msgid "The MIDA Labeling System team"
+msgstr "MIDA标记系统"
+
+#: templates/registration/password_reset_form.html:16
+msgid ""
+"Enter your email address below, and we’ll email instructions for setting a "
+"new one."
+msgstr ""
+
+#: templates/registration/password_reset_form.html:22
+msgid "Email address:"
+msgstr ""
+
+#: templates/registration/password_reset_form.html:25
+msgid "Reset my password"
+msgstr ""
+
+#: templates/registration/password_reset_subject.txt:2
+#, fuzzy
+#| msgid "MIDA Labeling System"
+msgid "Password reset on MIDA Labeling System"
+msgstr "MIDA标记系统"
+
+#: templates/registration/registration_done.html:7
+#, fuzzy
+#| msgid "Sign up"
+msgid "Sign Up"
+msgstr "注册"
+
+#: templates/registration/registration_done.html:15
+msgid "We’ve emailed you instructions for activating your account."
+msgstr ""
+
+#: templates/registration/registration_done.html:17
+msgid ""
+"If you don’t receive an email, please make sure you’ve entered the correct "
+"email address, and check your spam folder."
+msgstr ""
+
+#: user/countries.py:5
+msgid "Afghanistan"
+msgstr ""
+
+#: user/countries.py:6
+msgid "Åland Islands"
+msgstr ""
+
+#: user/countries.py:7
+msgid "Albania"
+msgstr ""
+
+#: user/countries.py:8
+msgid "Algeria"
+msgstr ""
+
+#: user/countries.py:9
+msgid "American Samoa"
+msgstr ""
+
+#: user/countries.py:10
+msgid "Andorra"
+msgstr ""
+
+#: user/countries.py:11
+msgid "Angola"
+msgstr ""
+
+#: user/countries.py:12
+#, fuzzy
+#| msgid "Angular"
+msgid "Anguilla"
+msgstr "成角"
+
+#: user/countries.py:13
+msgid "Antarctica"
+msgstr ""
+
+#: user/countries.py:14
+msgid "Antigua and Barbuda"
+msgstr ""
+
+#: user/countries.py:15
+msgid "Argentina"
+msgstr ""
+
+#: user/countries.py:16
+msgid "Armenia"
+msgstr ""
+
+#: user/countries.py:17
+msgid "Aruba"
+msgstr ""
+
+#: user/countries.py:18
+msgid "Australia"
+msgstr ""
+
+#: user/countries.py:19
+msgid "Austria"
+msgstr ""
+
+#: user/countries.py:20
+msgid "Azerbaijan"
+msgstr ""
+
+#: user/countries.py:21
+msgid "Bahamas"
+msgstr ""
+
+#: user/countries.py:22
+msgid "Bahrain"
+msgstr ""
+
+#: user/countries.py:23
+msgid "Bangladesh"
+msgstr ""
+
+#: user/countries.py:24
+msgid "Barbados"
+msgstr ""
+
+#: user/countries.py:25
+msgid "Belarus"
+msgstr ""
+
+#: user/countries.py:26
+msgid "Belgium"
+msgstr ""
+
+#: user/countries.py:27
+msgid "Belize"
+msgstr ""
+
+#: user/countries.py:28
+msgid "Benin"
+msgstr ""
+
+#: user/countries.py:29
+msgid "Bermuda"
+msgstr ""
+
+#: user/countries.py:30
+msgid "Bhutan"
+msgstr ""
+
+#: user/countries.py:31
+msgid "Bolivia (Plurinational State of)"
+msgstr ""
+
+#: user/countries.py:32
+msgid "Bonaire, Sint Eustatius and Saba"
+msgstr ""
+
+#: user/countries.py:33
+msgid "Bosnia and Herzegovina"
+msgstr ""
+
+#: user/countries.py:34
+msgid "Botswana"
+msgstr ""
+
+#: user/countries.py:35
+msgid "Bouvet Island"
+msgstr ""
+
+#: user/countries.py:36
+msgid "Brazil"
+msgstr ""
+
+#: user/countries.py:37
+msgid "British Indian Ocean Territory"
+msgstr ""
+
+#: user/countries.py:38
+msgid "Brunei Darussalam"
+msgstr ""
+
+#: user/countries.py:39
+msgid "Bulgaria"
+msgstr ""
+
+#: user/countries.py:40
+msgid "Burkina Faso"
+msgstr ""
+
+#: user/countries.py:41
+msgid "Burundi"
+msgstr ""
+
+#: user/countries.py:42
+msgid "Cabo Verde"
+msgstr ""
+
+#: user/countries.py:43
+msgid "Cambodia"
+msgstr ""
+
+#: user/countries.py:44
+msgid "Cameroon"
+msgstr ""
+
+#: user/countries.py:45
+msgid "Canada"
+msgstr ""
+
+#: user/countries.py:46
+msgid "Cayman Islands"
+msgstr ""
+
+#: user/countries.py:47
+msgid "Central African Republic"
+msgstr ""
+
+#: user/countries.py:48
+msgid "Chad"
+msgstr ""
+
+#: user/countries.py:49
+msgid "Chile"
+msgstr ""
+
+#: user/countries.py:50
+#, fuzzy
+#| msgid "Chinese"
+msgid "China"
+msgstr "中文"
+
+#: user/countries.py:51
+msgid "Christmas Island"
+msgstr ""
+
+#: user/countries.py:52
+msgid "Cocos (Keeling) Islands"
+msgstr ""
+
+#: user/countries.py:53
+msgid "Colombia"
+msgstr ""
+
+#: user/countries.py:54
+msgid "Comoros"
+msgstr ""
+
+#: user/countries.py:55
+msgid "Congo"
+msgstr ""
+
+#: user/countries.py:56
+msgid "Congo (the Democratic Republic of the)"
+msgstr ""
+
+#: user/countries.py:57
+msgid "Cook Islands"
+msgstr ""
+
+#: user/countries.py:58
+msgid "Costa Rica"
+msgstr ""
+
+#: user/countries.py:59
+msgid "Côte d'Ivoire"
+msgstr ""
+
+#: user/countries.py:60
+msgid "Croatia"
+msgstr ""
+
+#: user/countries.py:61
+msgid "Cuba"
+msgstr ""
+
+#: user/countries.py:62
+msgid "Curaçao"
+msgstr ""
+
+#: user/countries.py:63
+msgid "Cyprus"
+msgstr ""
+
+#: user/countries.py:64
+msgid "Czechia"
+msgstr ""
+
+#: user/countries.py:65
+msgid "Denmark"
+msgstr ""
+
+#: user/countries.py:66
+msgid "Djibouti"
+msgstr ""
+
+#: user/countries.py:67
+msgid "Dominica"
+msgstr ""
+
+#: user/countries.py:68
+msgid "Dominican Republic"
+msgstr ""
+
+#: user/countries.py:69
+msgid "Ecuador"
+msgstr ""
+
+#: user/countries.py:70
+msgid "Egypt"
+msgstr ""
+
+#: user/countries.py:71
+msgid "El Salvador"
+msgstr ""
+
+#: user/countries.py:72
+msgid "Equatorial Guinea"
+msgstr ""
+
+#: user/countries.py:73
+msgid "Eritrea"
+msgstr ""
+
+#: user/countries.py:74
+msgid "Estonia"
+msgstr ""
+
+#: user/countries.py:75
+msgid "Eswatini"
+msgstr ""
+
+#: user/countries.py:76
+msgid "Ethiopia"
+msgstr ""
+
+#: user/countries.py:77
+msgid "Falkland Islands (Malvinas)"
+msgstr ""
+
+#: user/countries.py:78
+msgid "Faroe Islands"
+msgstr ""
+
+#: user/countries.py:79
+msgid "Fiji"
+msgstr ""
+
+#: user/countries.py:80
+msgid "Finland"
+msgstr ""
+
+#: user/countries.py:81
+msgid "France"
+msgstr ""
+
+#: user/countries.py:82
+msgid "French Guiana"
+msgstr ""
+
+#: user/countries.py:83
+msgid "French Polynesia"
+msgstr ""
+
+#: user/countries.py:84
+msgid "French Southern Territories"
+msgstr ""
+
+#: user/countries.py:85
+msgid "Gabon"
+msgstr ""
+
+#: user/countries.py:86
+msgid "Gambia"
+msgstr ""
+
+#: user/countries.py:87
+msgid "Georgia"
+msgstr ""
+
+#: user/countries.py:88
+msgid "Germany"
+msgstr ""
+
+#: user/countries.py:89
+msgid "Ghana"
+msgstr ""
+
+#: user/countries.py:90
+msgid "Gibraltar"
+msgstr ""
+
+#: user/countries.py:91
+msgid "Greece"
+msgstr ""
+
+#: user/countries.py:92
+msgid "Greenland"
+msgstr ""
+
+#: user/countries.py:93
+msgid "Grenada"
+msgstr ""
+
+#: user/countries.py:94
+msgid "Guadeloupe"
+msgstr ""
+
+#: user/countries.py:95
+msgid "Guam"
+msgstr ""
+
+#: user/countries.py:96
+msgid "Guatemala"
+msgstr ""
+
+#: user/countries.py:97
+msgid "Guernsey"
+msgstr ""
+
+#: user/countries.py:98
+msgid "Guinea"
+msgstr ""
+
+#: user/countries.py:99
+msgid "Guinea-Bissau"
+msgstr ""
+
+#: user/countries.py:100
+msgid "Guyana"
+msgstr ""
+
+#: user/countries.py:101
+msgid "Haiti"
+msgstr ""
+
+#: user/countries.py:102
+msgid "Heard Island and McDonald Islands"
+msgstr ""
+
+#: user/countries.py:103
+msgid "Holy See"
+msgstr ""
+
+#: user/countries.py:104
+msgid "Honduras"
+msgstr ""
+
+#: user/countries.py:105
+msgid "Hong Kong"
+msgstr ""
+
+#: user/countries.py:106
+msgid "Hungary"
+msgstr ""
+
+#: user/countries.py:107
+msgid "Iceland"
+msgstr ""
+
+#: user/countries.py:108
+msgid "India"
+msgstr ""
+
+#: user/countries.py:109
+msgid "Indonesia"
+msgstr ""
+
+#: user/countries.py:110
+msgid "Iran (Islamic Republic of)"
+msgstr ""
+
+#: user/countries.py:111
+msgid "Iraq"
+msgstr ""
+
+#: user/countries.py:112
+msgid "Ireland"
+msgstr ""
+
+#: user/countries.py:113
+msgid "Isle of Man"
+msgstr ""
+
+#: user/countries.py:114
+msgid "Israel"
+msgstr ""
+
+#: user/countries.py:115
+msgid "Italy"
+msgstr ""
+
+#: user/countries.py:116
+msgid "Jamaica"
+msgstr ""
+
+#: user/countries.py:117
+msgid "Japan"
+msgstr ""
+
+#: user/countries.py:118
+msgid "Jersey"
+msgstr ""
+
+#: user/countries.py:119
+msgid "Jordan"
+msgstr ""
+
+#: user/countries.py:120
+msgid "Kazakhstan"
+msgstr ""
+
+#: user/countries.py:121
+msgid "Kenya"
+msgstr ""
+
+#: user/countries.py:122
+msgid "Kiribati"
+msgstr ""
+
+#: user/countries.py:123
+msgid "Korea (the Democratic People's Republic of)"
+msgstr ""
+
+#: user/countries.py:124
+msgid "Korea (the Republic of)"
+msgstr ""
+
+#: user/countries.py:125
+msgid "Kuwait"
+msgstr ""
+
+#: user/countries.py:126
+msgid "Kyrgyzstan"
+msgstr ""
+
+#: user/countries.py:127
+msgid "Lao People's Democratic Republic"
+msgstr ""
+
+#: user/countries.py:128
+msgid "Latvia"
+msgstr ""
+
+#: user/countries.py:129
+msgid "Lebanon"
+msgstr ""
+
+#: user/countries.py:130
+msgid "Lesotho"
+msgstr ""
+
+#: user/countries.py:131
+msgid "Liberia"
+msgstr ""
+
+#: user/countries.py:132
+msgid "Libya"
+msgstr ""
+
+#: user/countries.py:133
+msgid "Liechtenstein"
+msgstr ""
+
+#: user/countries.py:134
+msgid "Lithuania"
+msgstr ""
+
+#: user/countries.py:135
+msgid "Luxembourg"
+msgstr ""
+
+#: user/countries.py:136
+msgid "Macao"
+msgstr ""
+
+#: user/countries.py:137
+msgid "Madagascar"
+msgstr ""
+
+#: user/countries.py:138
+msgid "Malawi"
+msgstr ""
+
+#: user/countries.py:139
+msgid "Malaysia"
+msgstr ""
+
+#: user/countries.py:140
+msgid "Maldives"
+msgstr ""
+
+#: user/countries.py:141
+msgid "Mali"
+msgstr ""
+
+#: user/countries.py:142
+msgid "Malta"
+msgstr ""
+
+#: user/countries.py:143
+msgid "Marshall Islands"
+msgstr ""
+
+#: user/countries.py:144
+msgid "Martinique"
+msgstr ""
+
+#: user/countries.py:145
+msgid "Mauritania"
+msgstr ""
+
+#: user/countries.py:146
+msgid "Mauritius"
+msgstr ""
+
+#: user/countries.py:147
+msgid "Mayotte"
+msgstr ""
+
+#: user/countries.py:148
+msgid "Mexico"
+msgstr ""
+
+#: user/countries.py:149
+msgid "Micronesia (Federated States of)"
+msgstr ""
+
+#: user/countries.py:150
+msgid "Moldova (the Republic of)"
+msgstr ""
+
+#: user/countries.py:151
+msgid "Monaco"
+msgstr ""
+
+#: user/countries.py:152
+msgid "Mongolia"
+msgstr ""
+
+#: user/countries.py:153
+msgid "Montenegro"
+msgstr ""
+
+#: user/countries.py:154
+msgid "Montserrat"
+msgstr ""
+
+#: user/countries.py:155
+msgid "Morocco"
+msgstr ""
+
+#: user/countries.py:156
+msgid "Mozambique"
+msgstr ""
+
+#: user/countries.py:157
+msgid "Myanmar"
+msgstr ""
+
+#: user/countries.py:158
+msgid "Namibia"
+msgstr ""
+
+#: user/countries.py:159
+msgid "Nauru"
+msgstr ""
+
+#: user/countries.py:160
+msgid "Nepal"
+msgstr ""
+
+#: user/countries.py:161
+msgid "Netherlands"
+msgstr ""
+
+#: user/countries.py:162
+msgid "New Caledonia"
+msgstr ""
+
+#: user/countries.py:163
+msgid "New Zealand"
+msgstr ""
+
+#: user/countries.py:164
+msgid "Nicaragua"
+msgstr ""
+
+#: user/countries.py:165
+msgid "Niger"
+msgstr ""
+
+#: user/countries.py:166
+msgid "Nigeria"
+msgstr ""
+
+#: user/countries.py:167
+msgid "Niue"
+msgstr ""
+
+#: user/countries.py:168
+msgid "Norfolk Island"
+msgstr ""
+
+#: user/countries.py:169
+msgid "North Macedonia"
+msgstr ""
+
+#: user/countries.py:170
+msgid "Northern Mariana Islands"
+msgstr ""
+
+#: user/countries.py:171
+msgid "Norway"
+msgstr ""
+
+#: user/countries.py:172
+msgid "Oman"
+msgstr ""
+
+#: user/countries.py:173
+msgid "Pakistan"
+msgstr ""
+
+#: user/countries.py:174
+msgid "Palau"
+msgstr ""
+
+#: user/countries.py:175
+msgid "Palestine, State of"
+msgstr ""
+
+#: user/countries.py:176
+msgid "Panama"
+msgstr ""
+
+#: user/countries.py:177
+msgid "Papua New Guinea"
+msgstr ""
+
+#: user/countries.py:178
+msgid "Paraguay"
+msgstr ""
+
+#: user/countries.py:179
+msgid "Peru"
+msgstr ""
+
+#: user/countries.py:180
+msgid "Philippines"
+msgstr ""
+
+#: user/countries.py:181
+msgid "Pitcairn"
+msgstr ""
+
+#: user/countries.py:182
+msgid "Poland"
+msgstr ""
+
+#: user/countries.py:183
+msgid "Portugal"
+msgstr ""
+
+#: user/countries.py:184
+msgid "Puerto Rico"
+msgstr ""
+
+#: user/countries.py:185
+msgid "Qatar"
+msgstr ""
+
+#: user/countries.py:186
+msgid "Réunion"
+msgstr ""
+
+#: user/countries.py:187
+msgid "Romania"
+msgstr ""
+
+#: user/countries.py:188
+msgid "Russian Federation"
+msgstr ""
+
+#: user/countries.py:189
+msgid "Rwanda"
+msgstr ""
+
+#: user/countries.py:190
+msgid "Saint Barthélemy"
+msgstr ""
+
+#: user/countries.py:191
+msgid "Saint Helena, Ascension and Tristan da Cunha"
+msgstr ""
+
+#: user/countries.py:192
+msgid "Saint Kitts and Nevis"
+msgstr ""
+
+#: user/countries.py:193
+msgid "Saint Lucia"
+msgstr ""
+
+#: user/countries.py:194
+msgid "Saint Martin (French part)"
+msgstr ""
+
+#: user/countries.py:195
+msgid "Saint Pierre and Miquelon"
+msgstr ""
+
+#: user/countries.py:196
+msgid "Saint Vincent and the Grenadines"
+msgstr ""
+
+#: user/countries.py:197
+msgid "Samoa"
+msgstr ""
+
+#: user/countries.py:198
+msgid "San Marino"
+msgstr ""
+
+#: user/countries.py:199
+msgid "Sao Tome and Principe"
+msgstr ""
+
+#: user/countries.py:200
+msgid "Saudi Arabia"
+msgstr ""
+
+#: user/countries.py:201
+msgid "Senegal"
+msgstr ""
+
+#: user/countries.py:202
+msgid "Serbia"
+msgstr ""
+
+#: user/countries.py:203
+msgid "Seychelles"
+msgstr ""
+
+#: user/countries.py:204
+msgid "Sierra Leone"
+msgstr ""
+
+#: user/countries.py:205
+msgid "Singapore"
+msgstr ""
+
+#: user/countries.py:206
+msgid "Sint Maarten (Dutch part)"
+msgstr ""
+
+#: user/countries.py:207
+msgid "Slovakia"
+msgstr ""
+
+#: user/countries.py:208
+msgid "Slovenia"
+msgstr ""
+
+#: user/countries.py:209
+msgid "Solomon Islands"
+msgstr ""
+
+#: user/countries.py:210
+msgid "Somalia"
+msgstr ""
+
+#: user/countries.py:211
+msgid "South Africa"
+msgstr ""
+
+#: user/countries.py:212
+msgid "South Georgia and the South Sandwich Islands"
+msgstr ""
+
+#: user/countries.py:213
+msgid "South Sudan"
+msgstr ""
+
+#: user/countries.py:214
+msgid "Spain"
+msgstr ""
+
+#: user/countries.py:215
+msgid "Sri Lanka"
+msgstr ""
+
+#: user/countries.py:216
+msgid "Sudan"
+msgstr ""
+
+#: user/countries.py:217
+#, fuzzy
+#| msgid "Username"
+msgid "Suriname"
+msgstr "用户名"
+
+#: user/countries.py:218
+msgid "Svalbard and Jan Mayen"
+msgstr ""
+
+#: user/countries.py:219
+msgid "Sweden"
+msgstr ""
+
+#: user/countries.py:220
+msgid "Switzerland"
+msgstr ""
+
+#: user/countries.py:221
+msgid "Syrian Arab Republic"
+msgstr ""
+
+#: user/countries.py:222
+msgid "Taiwan (Province of China)"
+msgstr ""
+
+#: user/countries.py:223
+msgid "Tajikistan"
+msgstr ""
+
+#: user/countries.py:224
+msgid "Tanzania, the United Republic of"
+msgstr ""
+
+#: user/countries.py:225
+msgid "Thailand"
+msgstr ""
+
+#: user/countries.py:226
+msgid "Timor-Leste"
+msgstr ""
+
+#: user/countries.py:227
+msgid "Togo"
+msgstr ""
+
+#: user/countries.py:228
+msgid "Tokelau"
+msgstr ""
+
+#: user/countries.py:229
+msgid "Tonga"
+msgstr ""
+
+#: user/countries.py:230
+msgid "Trinidad and Tobago"
+msgstr ""
+
+#: user/countries.py:231
+msgid "Tunisia"
+msgstr ""
+
+#: user/countries.py:232
+msgid "Turkey"
+msgstr ""
+
+#: user/countries.py:233
+msgid "Turkmenistan"
+msgstr ""
+
+#: user/countries.py:234
+msgid "Turks and Caicos Islands"
+msgstr ""
+
+#: user/countries.py:235
+msgid "Tuvalu"
+msgstr ""
+
+#: user/countries.py:236
+msgid "Uganda"
+msgstr ""
+
+#: user/countries.py:237
+msgid "Ukraine"
+msgstr ""
+
+#: user/countries.py:238
+msgid "United Arab Emirates"
+msgstr ""
+
+#: user/countries.py:239
+msgid "United Kingdom of Great Britain and Northern Ireland"
+msgstr ""
+
+#: user/countries.py:240
+msgid "United States Minor Outlying Islands"
+msgstr ""
+
+#: user/countries.py:241
+msgid "United States of America"
+msgstr ""
+
+#: user/countries.py:242
+msgid "Uruguay"
+msgstr ""
+
+#: user/countries.py:243
+msgid "Uzbekistan"
+msgstr ""
+
+#: user/countries.py:244
+msgid "Vanuatu"
+msgstr ""
+
+#: user/countries.py:245
+msgid "Venezuela (Bolivarian Republic of)"
+msgstr ""
+
+#: user/countries.py:246
+#, fuzzy
+#| msgid "Dataset"
+msgid "Viet Nam"
+msgstr "数据集"
+
+#: user/countries.py:247
+msgid "Virgin Islands (British)"
+msgstr ""
+
+#: user/countries.py:248
+msgid "Virgin Islands (U.S.)"
+msgstr ""
+
+#: user/countries.py:249
+msgid "Wallis and Futuna"
+msgstr ""
+
+#: user/countries.py:250
+msgid "Western Sahara"
+msgstr ""
+
+#: user/countries.py:251
+msgid "Yemen"
+msgstr ""
+
+#: user/countries.py:252
+msgid "Zambia"
+msgstr ""
+
+#: user/countries.py:253
+msgid "Zimbabwe"
+msgstr ""
+
+#: user/forms.py:14
+msgid "Username"
+msgstr "用户名"
+
+#: user/forms.py:15
+msgid "Email"
+msgstr "邮箱"
+
+#: user/forms.py:16
+#, fuzzy
+#| msgid "First"
+msgid "First Name"
+msgstr "第一"
+
+#: user/forms.py:17
+#, fuzzy
+#| msgid "Dataset"
+msgid "Last Name"
+msgstr "数据集"
+
+#: user/forms.py:18 user/models.py:14
+msgid "Organization/Institution"
+msgstr ""
+
+#: user/forms.py:20 user/models.py:16
+msgid "Country"
+msgstr ""
+
+#: user/forms.py:21
+msgid "Password"
+msgstr "密码"
+
+#: user/forms.py:22
+msgid "Password Confirmation"
+msgstr "确认密码"
+
+#: user/forms.py:29
+msgid "Your username must be at least 3 characters long"
+msgstr "用户名必须至少包含3个字符"
+
+#: user/forms.py:32
+msgid "Your username is too long. The max length is 20"
+msgstr "用户名太长，最多包含20个字符"
+
+#: user/forms.py:36
+msgid "Your username already exists"
+msgstr "用户名已存在"
+
+#: user/forms.py:44
+msgid "Your email already exists"
+msgstr "邮箱已存在"
+
+#: user/forms.py:46
+msgid "Please enter a valid email"
+msgstr "请输入合法邮箱地址"
+
+#: user/forms.py:54
+msgid "The first name cannot be empty."
+msgstr ""
+
+#: user/forms.py:62
+msgid "The last name cannot be empty."
+msgstr ""
+
+#: user/forms.py:69
+msgid "Your password is too short"
+msgstr "您的密码太短"
+
+#: user/forms.py:71
+msgid "Your password is too long"
+msgstr "您的密码太长"
+
+#: user/forms.py:81
+msgid "Password mismatch Please enter again"
+msgstr "密码不匹配，请重新输入"
+
+#: user/forms.py:89
+msgid "Organization/institution cannot be empty"
+msgstr ""
+
+#: user/forms.py:95
+msgid "Country filed is required"
+msgstr ""
+
+#~ msgid "Export Self Labeled"
+#~ msgstr "导出自己的标记"
+
+#~ msgid "You don’t have permission to view or edit anything."
+#~ msgstr "您没有权限查看或编辑。"
+
+#~ msgid "Success saved!"
+#~ msgstr "保存成功！"
+
+#~ msgid "Add"
+#~ msgstr "添加"
+
+#~ msgid "View"
+#~ msgstr "查看"
+
+#~ msgid "Change"
+#~ msgstr "修改"
+
+#~ msgid "Tumor Type"
+#~ msgstr "肿瘤类型"
+
+#~ msgid "Author"
+#~ msgstr "作者"

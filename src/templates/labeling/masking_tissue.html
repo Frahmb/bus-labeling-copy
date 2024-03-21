@@ -1,0 +1,198 @@
+{% extends 'labeling/masking_base.html' %}
+{% load i18n %}
+
+{
+    {% block action_tools %}
+    
+        <button id='clean' class="btn btn-dark btn-sm">{% trans "Clean" %}</button>
+        <div class = "divider"></div>
+        <button id='cleanAll' class="btn btn-dark btn-sm">{% trans "Clean All" %}
+        </button>
+        <div class = "divider"></div>
+    {% endblock %}
+    
+    {% block left_panel %}
+        <button class="btn btn-danger btn-sm draw_btn"
+         >{% trans "Skin Tissue" %}
+        </button>
+        
+        <button class="btn btn-success btn-sm draw_btn"
+            >{% trans "Fat Tissue" %}
+        </button>
+        
+        <button class="btn btn-info btn-sm draw_btn"
+            >{% trans "Tumor Tissue" %}
+        </button>
+        
+        <button class="btn btn-warning btn-sm draw_btn"
+       >{% trans "Muscle Tissue" %}
+        </button>
+       
+        <button id='end_draw' class="btn btn-dark btn-sm draw_btn"
+                >{% trans "End draw" %}</button>
+        </button>
+   
+    {% endblock %}
+
+{% block script %}
+    <script>
+        class Layer extends BaseLayer{
+            constructor(size) {
+                super(size);
+                this.strokes = [[], [], [], []];
+                this.current_draw_index = 0;
+                this.strokes_color = ['red', 'green', 'blue', 'orange'];
+                this.curr_stroke = [];
+                this.show_options = {stroke: true};
+            }
+
+            startDrawEvent(e) {
+                let ox, oy;
+                if (e.type === 'mousedown') {
+                    ox = e.offsetX;
+                    oy = e.offsetY;
+                    console.log(ox,oy,scale);
+                } else if (e.type === 'touchstart') {
+                    ox = (e.touches[0].clientX - this.canvas.get(0).getBoundingClientRect().left) / scale;
+                    oy = (e.touches[0].clientY - this.canvas.get(0).getBoundingClientRect().top) / scale;
+                    console.log(ox,oy,scale);
+                }
+                this.cleanStroke();
+                this.reDraw();
+                this.curr_stroke = [];
+                this.curr_stroke.push([ox, oy]);
+
+                this.ctx.beginPath();
+                this.ctx.moveTo(ox, oy);
+  
+
+                this.canvas.on('mousemove touchmove', e => this.drawEvent(e));
+                $('body').on('mouseup touchend', e => this.endDrawEvent());
+            }
+
+            drawEvent(e) {
+
+                this.saved = false;
+                let ox, oy;
+                if (e.type === 'mousemove') {
+                    ox = e.offsetX;
+                    oy = e.offsetY;
+                } else if (e.type === 'touchmove') {
+                    e.preventDefault();
+                    ox = (e.touches[0].clientX - this.canvas.get(0).getBoundingClientRect().left) / scale;
+                    oy = (e.touches[0].clientY - this.canvas.get(0).getBoundingClientRect().top) / scale;
+                }
+
+                this.curr_stroke.push([ox, oy]);
+                this.ctx.lineTo(ox, oy);
+                this.ctx.strokeStyle = this.strokes_color[this.current_draw_index];
+                this.ctx.stroke();
+            }
+
+            endDrawEvent() {
+                this.canvas.off('mousemove touchmove');
+                $('body').off('mouseup touchend');
+                this.curr_stroke.unshift([
+                    0,
+                    this.curr_stroke[0][1]
+                ]);
+                this.curr_stroke.push([
+                    this.width,
+                    this.curr_stroke[this.curr_stroke.length - 1][1]
+                ]);
+                this.strokes[this.current_draw_index] = this.curr_stroke;
+                this.curr_stroke = [];
+                this.reDraw();
+            }
+
+            startDraw(index) {
+                this.endDraw();
+                this.current_draw_index = index;
+                this.canvas.on('mousedown touchstart', e => this.startDrawEvent(e));
+            }
+
+            endDraw() {
+                this.canvas.off('mousedown touchstart');
+            }
+
+            drawStroke() {
+                zoom_toggle = false;
+                for (let i = 0; i < this.strokes.length; i++) {
+                    let color = this.strokes_color[i];
+                    const stroke = this.strokes[i];
+                    for (let j = 0; j < stroke.length; j++) {
+                        if (j === 0) {
+                            this.ctx.beginPath();
+                            this.ctx.moveTo(stroke[j][0], stroke[j][1]);
+                        } else {
+                            this.ctx.lineTo(stroke[j][0], stroke[j][1]);
+                            this.ctx.strokeStyle = color;
+                            this.ctx.stroke();
+                        }
+                    }
+                }
+            }
+
+            reDraw() {
+                this.cleanBoard();
+
+                if (this.show_options.stroke) {
+                    this.drawStroke();
+                }
+            }
+
+            cleanStroke() {
+                this.strokes[this.current_draw_index] = [];
+                this.reDraw();
+            }
+
+            cleanAllStroke() {
+                this.strokes = [[], [], [], []];
+                this.reDraw();
+            }
+
+            export() {
+                for (let i = 0; i < 3; i++) {
+                    if (this.strokes[i].length === 0) {
+                        alert({% trans "'The first three tissues must be fully completed. ' + (i + 1) + ' is blank.'" %});
+                        return false;
+                    }
+                }
+                zoom_toggle = true;
+                return JSON.stringify(this.strokes)
+            }
+
+            import() {
+                const data = '{{ mask.tissue|safe }}';
+                if (data.length > 0) {
+                    this.strokes = JSON.parse(data);
+                    this.reDraw();
+                }
+            }
+        }
+
+        $(function () {
+            // Drawing
+            $('.draw_btn').click(function () {
+                if (!$(this).hasClass('active')) {
+                    curr_layer.startDraw($(this).index());
+                    $(this).addClass('active');
+                    $(this).siblings().removeClass('active');
+                }
+            })
+
+            $('#clean').click(function () {
+                curr_layer.cleanStroke();
+            })
+
+            $('#cleanAll').click(function () {
+                
+                curr_layer.cleanAllStroke();
+            })
+            $('#end_draw').click(function(){
+                curr_layer.endDraw();
+                zoom_toggle = true;
+            })
+        });
+    </script>
+{% endblock %}

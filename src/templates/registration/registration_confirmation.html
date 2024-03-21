@@ -1,0 +1,9 @@
+{% load i18n %}{% autoescape off %}
+Hi {{ user.username }},
+
+Please click on the link to confirm your registration,
+{% block reset_link %}
+http://bus.midalab.net{% url 'activation' uidb64=uid token=token %}
+{% endblock %}
+{% blocktranslate %}The MIDA Labeling System team{% endblocktranslate %}
+{% endautoescape %}

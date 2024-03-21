@@ -1,0 +1,254 @@
+{% extends 'labeling/masking_base.html' %}
+{% load i18n %}
+
+{% block action_tools %}
+    <button id='start_draw' class="btn btn-success btn-sm">{% trans "Start Draw" %}
+    </button>
+    <button id='end_draw' class="btn btn-danger btn-sm active"
+            style="display: none">{% trans "End Draw" %}
+    </button>
+    <div class = "divider"></div>
+
+
+    <button id='show_mask' class="btn btn-success btn-sm">{% trans "Show Mask" %}
+    </button>
+    <button id='close_mask' class="btn btn-warning btn-sm active"
+            style="display: none">{% trans "Close Mask" %}
+    </button>
+    <div class = "divider"></div>
+    
+
+    <button id='undo' class="btn btn-dark btn-sm">{% trans "Undo" %}</button>
+    <div class = "divider"></div>
+
+    <button id='redo' class="btn btn-dark btn-sm">{% trans "Redo" %}</button>
+    <div class = "divider"></div>
+    
+
+    <button id='clean' class="btn btn-dark btn-sm">{% trans "Clean" %}</button>
+    <div class = "divider"></div>
+
+{% endblock %}
+
+
+{% block script %}
+    <script>
+        class Layer extends BaseLayer {
+            constructor(size) {
+                super(size)
+                this.strokes = [];
+                this.undo_history = [];
+
+                this.mask = [];
+                this.curr_stroke = [];
+
+                this.show_options = {stroke: true, mask: true};
+            }
+//starting here with touch 
+
+            startDrawEvent(e) {
+                let ox, oy;
+
+                if (e.type === 'mousedown') {
+                    ox = e.offsetX;
+                    oy = e.offsetY;
+                    console.log(ox,oy,scale);
+                } else if (e.type === 'touchstart') {
+                    ox = (e.touches[0].clientX - this.canvas.get(0).getBoundingClientRect().left) / scale;
+                    oy = (e.touches[0].clientY - this.canvas.get(0).getBoundingClientRect().top) / scale;
+                    console.log(ox,oy,scale);
+                }
+
+                this.undo_history = [];
+                this.curr_stroke = [];
+                this.curr_stroke.push([ox, oy]);
+
+                this.ctx.beginPath();
+                this.ctx.moveTo(ox, oy);
+
+                this.canvas.on('mousemove touchmove', e => this.drawEvent(e));
+                this.canvas.on('mouseup touchend', e => this.endDrawEvent());
+            }
+
+            drawEvent(e) {
+                this.saved = false;
+                let ox, oy;
+                if (e.type === 'mousemove') {
+                    ox = e.offsetX;
+                    oy = e.offsetY;
+                } else if (e.type === 'touchmove') {
+                    e.preventDefault();
+                    ox = (e.touches[0].clientX - this.canvas.get(0).getBoundingClientRect().left) / scale;
+                    oy = (e.touches[0].clientY - this.canvas.get(0).getBoundingClientRect().top) / scale;
+                }
+
+                this.curr_stroke.push([ox, oy]);
+                this.ctx.lineTo(ox, oy);
+                this.ctx.strokeStyle = 'red';
+                this.ctx.stroke();
+            }
+
+            endDrawEvent() {
+                this.canvas.off('mousemove touchmove');
+                this.canvas.off('mouseup touchend');
+                this.strokes.push(this.curr_stroke);
+                this.curr_stroke = [];
+            }
+
+            startDraw() {
+                this.endDraw();
+                this.canvas.on('mousedown touchstart', e => this.startDrawEvent(e));
+            }
+
+            endDraw() {
+                this.canvas.off('mousedown touchstart');
+            }
+
+            generateMask() {
+                const stroke = [];
+                for (let i = 0; i < this.strokes.length; i++) {
+                    stroke.push(...this.strokes[i]);
+                }
+                if (stroke.length > 0) {
+                    this.mask = stroke;
+                }
+            }
+
+            drawStroke() {
+                for (let i = 0; i < this.strokes.length; i++) {
+                    const stroke = this.strokes[i];
+                    for (let j = 0; j < stroke.length; j++) {
+                        if (j === 0) {
+                            this.ctx.beginPath();
+                            this.ctx.moveTo(stroke[j][0], stroke[j][1]);
+                        } else {
+                            this.ctx.lineTo(stroke[j][0], stroke[j][1]);
+                            this.ctx.strokeStyle = 'red';
+                            this.ctx.stroke();
+                        }
+                    }
+                }
+            }
+
+            drawMask() {
+                this.generateMask();
+
+                if (this.mask.length > 1) {
+                    this.ctx.beginPath();
+                    this.ctx.moveTo(...this.mask[0]);
+
+                    for (let j = 1; j < this.mask.length; j++) {
+                        const point = this.mask[j];
+                        this.ctx.lineTo(...point);
+                    }
+                    this.ctx.closePath();
+                    this.ctx.fillStyle = 'rgba(0, 255, 0, 0.2)';
+                    this.ctx.fill();
+                }
+            }
+
+            reDraw() {
+                this.cleanBoard();
+
+                if (this.show_options.stroke) {
+                    this.drawStroke();
+                }
+
+                if (this.show_options.mask) {
+                    this.drawMask();
+                }
+            }
+
+            cleanStroke() {
+                this.strokes = [];
+                this.undo_history = [];
+                this.reDraw();
+            }
+
+            unDoStroke() {
+                if (this.strokes.length > 0) {
+                    const stroke = this.strokes.pop();
+                    this.undo_history.push(stroke);
+                    this.reDraw();
+                }
+            }
+
+            reDoStroke() {
+                if (this.undo_history.length > 0) {
+                    const stroke = this.undo_history.pop();
+                    this.strokes.push(stroke);
+                    this.reDraw();
+                }
+            }
+
+            export() {
+                this.generateMask();
+                if (this.mask.length > 0) {
+                    return JSON.stringify(this.mask);
+                } else {
+                    alert("{% trans 'Tumor masking cannot be blank.' %}")
+                    return false;
+                }
+            }
+
+            import() {
+                const data = '{{ mask.tumor|safe }}';
+                if (data.length > 0) {
+                    this.mask = JSON.parse(data);
+                    this.reDraw();
+                }
+            }
+        }
+
+        $(function () {
+            let start_draw = $('#start_draw');
+            let end_draw = $('#end_draw');
+            let show_mask = $('#show_mask');
+            let close_mask = $('#close_mask');
+
+            start_draw.click(function () {
+                zoom_toggle = false;
+                start_draw.toggle();
+                end_draw.toggle();
+                curr_layer.startDraw();
+            })
+
+            end_draw.click(function () {
+                zoom_toggle = true;
+                start_draw.toggle();
+                end_draw.toggle();
+                curr_layer.endDraw();
+            })
+
+            $('#undo').click(function () {
+                curr_layer.unDoStroke();
+            })
+
+            $('#redo').click(function () {
+                curr_layer.reDoStroke();
+            })
+
+            $('#clean').click(function () {
+                curr_layer.show_options.mask = false;
+                curr_layer.cleanStroke();
+                if (close_mask.is(':visible')) {
+                    close_mask.click();
+                }
+            })
+
+            show_mask.click(function () {
+                show_mask.toggle();
+                close_mask.toggle();
+                curr_layer.show_options.mask = true;
+                curr_layer.reDraw();
+            })
+
+            close_mask.click(function () {
+                show_mask.toggle();
+                close_mask.toggle();
+                curr_layer.show_options.mask = false;
+                curr_layer.reDraw();
+            })
+        });
+    </script>
+{% endblock %}

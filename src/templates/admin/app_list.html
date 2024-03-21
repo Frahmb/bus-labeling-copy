@@ -1,0 +1,70 @@
+{% load i18n %}
+
+{% if app_list %}
+  {% for app in app_list %}
+    <div class="app-{{ app.app_label }} module{% if app.app_url in request.path %} current-app{% endif %}">
+      <table>
+        <caption>
+          <span class="section" title="{% blocktranslate with name=app.name %}Models in the {{ name }} application{% endblocktranslate %}">{{ app.name }}</span>
+        </caption>
+        {% if app.models and app.app_label == "private" %}
+          <tr>
+            <th></th>
+            <th></th>
+            <th>Creator</th>
+          </tr>
+        {% for model in app.models %}
+          <tr class="model-{{ model.object_name|lower }}{% if model.admin_url in request.path %} current-model{% endif %}">
+            {% if model.admin_url %}
+              <th scope="row"><a href="{{ model.admin_url }}"{% if model.admin_url in request.path %} aria-current="page"{% endif %}>{{ model.name|truncatechars:25 }}</a></th>
+            {% else %}
+              <th scope="row">{{ model.name|truncatechars:25 }}</th>
+            {% endif %}
+              <td></td>
+              <td>{{ model.creator }}</td>
+          </tr>
+        {% endfor %}
+        {% elif app.models %}
+        {% for model in app.models %}
+          {% if app.app_label == "public" %}
+          <tr>
+            <th>Name</th>
+            <th></th>
+            <th>Creator</th>
+          </tr>
+          {% endif %}
+          <tr class="model-{{ model.object_name|lower }}{% if model.admin_url in request.path %} current-model{% endif %}">
+            {% if model.admin_url %}
+              <th scope="row"><a href="{{ model.admin_url }}"{% if model.admin_url in request.path %} aria-current="page"{% endif %}>{{ model.name|truncatechars:25 }}</a></th>
+            {% else %}
+              <th scope="row">{{ model.name|truncatechars:25 }}</th>
+            {% endif %}
+
+            {% if model.mask_url %}
+              <td><a href="{{ model.mask_url }}" class="changelink"
+              >{% translate 'Masking' %}</a></td>
+            {% else %}
+              <td></td>
+            {% endif %}
+
+            {% if model.owner_url %}
+              <td><a href="{{ model.owner_url }}" class="changelink">{% translate 'Setting' %}</a></td>
+            {% elif model.creator %}
+              <td>{{ model.creator }}</td>
+            {% else %}
+              <td></td>
+            {% endif %}
+          </tr>
+        {% endfor %}
+        {% else %}
+            <th scope="row"></th>
+            <td></td>
+            <td></td>
+        {% endif %}
+      </table>
+    </div>
+  {% endfor %}
+{% else %}
+{#  <p>{% translate 'You don’t have permission to view or edit anything.' %}</p>#}
+    <p></p>
+{% endif %}

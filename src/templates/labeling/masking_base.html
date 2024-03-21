@@ -1,0 +1,573 @@
+{% load i18n %}
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>{% trans "Masking" %} {{ img_name }}</title>
+    <link rel="stylesheet"
+          href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
+          crossorigin="anonymous">
+    <link rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
+    
+    <style>
+        {% block css_style %}
+
+            /*HEADER*/
+            #header {
+                width: auto;
+                height: auto;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                padding: 10px 40px;
+                background: #417690;
+                color: #ffc;
+                overflow: hidden;
+            }
+            #branding {
+                float: left;
+            }
+
+            #branding h1 {
+                padding: 0;
+                margin: 0 20px 0 0;
+                font-weight: 300;
+                font-size: 24px;
+                color: #f5dd5d;
+            }
+
+            #branding h1, #branding h1 a:link, #branding h1 a:visited {
+                color: #f5dd5d;
+            }
+            #header a:link, #header a:visited {
+                color: #fff;
+            }
+            #user-tools {
+                float: right;
+                padding: 0;
+                margin: 0 0 0 20px;
+                font-weight: 300;
+                font-size: 11px;
+                letter-spacing: 0.5px;
+                text-transform: uppercase;
+                text-align: right;
+            }
+
+            #user-tools a {
+                border-bottom: 1px solid rgba(255, 255, 255, 0.25);
+            }
+
+            #user-tools a:focus, #user-tools a:hover {
+                text-decoration: none;
+                border-bottom-color: #79aec8;
+                color: #79aec8;
+                
+            }
+
+            /* MASKING BOARD*/
+            #board {
+                position: relative;
+                margin-left: auto;
+                margin-right: auto;
+                
+            }
+            #board .layers {
+                position: absolute;
+                left: 0;
+                top: 0;
+                
+
+            }
+            #container {
+                display: block;
+                margin-left: auto;
+                margin-right: auto;
+                border: 20px solid #c4dce8;
+                margin-top: 2%;
+                
+            }
+
+            .scrollable-content {
+                
+                overflow: hidden;
+                position: relative;
+                width: 100%;
+                height: 100%;
+                background-color: #c4dce8;
+                
+                
+            }
+
+            #wrapper {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                
+            }
+
+            #zoom {
+                width: 100%;
+                height: 100%;               
+                transform: scale(1);
+                transform: translate(0px, 0px);
+                cursor: grab;
+
+            }
+            
+            /*PANELS*/
+
+            #left_panel, #right_panel {
+                width: 175px;
+                padding: 10px;
+                display: flex;
+                flex-direction: column;
+              
+                background-color: white;
+                z-index: 1;
+            }
+
+            #lower_panel{
+                text-align: center;
+            }
+
+            #upper_panel {
+                height: 5%;
+                background: #447e9b ;
+                text-align: center;            
+            }
+
+            /*Added for spacing of buttons*/
+            .divider{
+                width:10px;
+                height:10px;            
+            }
+            .draw_btn {
+                margin-bottom: 10px;
+            }
+            .zoom_button {
+                width: 70px; 
+                height: 40px; 
+                font-size: 18px; 
+                color: white;
+                border: 1px solid #007bff;
+                cursor: pointer; 
+                background-color: #007bff; 
+                border-radius: 5px; 
+            }
+            .zoom_button:hover {
+                background-color: #006ee4; 
+            }
+
+        {% endblock %}
+    </style>
+    
+</head>
+
+<body>
+ 
+<!-- Header bar-->
+    <div id="header">
+        <div id="branding">
+            <h1 id="site-name">
+                <a href="/labeling/">MIDA Labeling System</a>               
+            </h1>
+        </div>
+
+        <div id="user-tools">
+            
+            Welcome,
+            <strong>frah3946</strong>.        
+
+            <a href="/">Homepage</a> /
+
+            <a href="/static/download/MIDA_Labeling_System_Guideline.pdf">Guideline</a> /
+
+            <a href="/labeling/password_change/">Change password</a> /
+
+            <a href="/labeling/logout/">Log out</a> /
+            <form action="/i18n/setlang/" method="post" style="display:inline"><input type="hidden" name="csrfmiddlewaretoken" value="EhsGgavobpkck3IfW0hTJMWsI5TzCvPJsrlwvD5x1Y6AMB2URPeBXFH7W5q5gTYv">
+                <input name="next" type="hidden" value="">
+                <select name="language" onchange="this.form.submit()" style="font-size: 11px; padding: 0;height: 80%">
+               
+                    <option value="en" selected="">
+                        English (en)
+                    </option>
+                    <option value="zh-hans">
+                        简体中文 (zh-hans)
+                    </option>
+        
+                </select>
+            </form>
+
+        </div>
+    </div>
+
+
+<!-- Image containers-->
+
+<div id="wrapper">
+    
+    <div id="left_panel">
+        
+        {% block left_panel %}
+        {% endblock %}
+        
+        {% block action_tools %}
+        {% endblock %}       
+        
+        <button id="save" class="btn btn-primary btn-sm"
+            onclick="saveData()">{% trans "Save" %}        
+        </button>
+
+        <div class = "divider"></div>
+        
+        <button id="save_next"
+            class="btn btn-primary btn-sm {% if not next_url %}disabled{% endif %}"
+            onclick="saveDataNext()">{% trans "Save & Next" %}
+        </button>
+
+    </div>
+    
+    <div id='container'>
+
+        <div class="scrollable-content">
+            
+            <div id="zoom">
+                <img id="background" style="display:none;" alt="zoom">
+
+                <div id='board'>              
+                </div>
+
+            </div>
+        </div>
+                
+        <div id="lower_panel">
+            <br>
+ 
+                <p>{{ description | safe }}</p>
+            
+            <br>
+
+        </div>
+    </div>
+    <div id="right_panel">
+        <div>       
+            <button id="zoomInButton"
+            class="zoom_button">+</button>
+            
+            <button id="zoomOutButton"
+            class="zoom_button">-</button>
+            <div class = "divider"></div>
+        </div>
+
+        <a class="btn {% if mask.cropping %} btn-success {% else %} btn-warning {% endif %} btn-sm"
+        href="/masking/cropping/{{ ds_name }}/{{ img.id }}">
+            {% trans "Cropping" %}
+            {% if mask.cropping|length > 0 %}
+                <i class="bi bi-check-circle"></i>
+            {% else %}
+                <i class="bi bi-cone-striped"></i>
+            {% endif %}
+        </a>
+
+        <div class = "divider"></div>
+
+        <a class="btn {% if mask.tumor %} btn-success {% else %} btn-warning {% endif %} btn-sm"
+        href="/masking/tumor/{{ ds_name }}/{{ img.id }}">
+            {% trans "Tumor" %}
+            {% if mask.tumor|length > 0 %}
+                <i class="bi bi-check-circle"></i>
+            {% else %}
+                <i class="bi bi-cone-striped"></i>
+            {% endif %}
+        </a>
+
+        <div class = "divider"></div>
+
+        <a class="btn {% if mask.tissue %} btn-success {% else %} btn-warning {% endif %} btn-sm"
+        href="/masking/tissue/{{ ds_name }}/{{ img.id }}">
+            {% trans "Tissue" %}
+            {% if mask.tissue|length > 0 %}
+                <i class="bi bi-check-circle"></i>
+            {% else %}
+                <i class="bi bi-cone-striped"></i>
+            {% endif %}
+        </a>
+
+        <div class = "divider"></div>
+
+        <div>
+            
+
+            <a class="btn btn-primary btn-sm {% if not prev_url %}disabled{% endif %}"
+                href="{{ prev_url }}">{% trans "Previous" %}</a>
+            <a id='next'
+                class="btn btn-primary btn-sm {% if not next_url %}disabled{% endif %}"
+                href="{{ next_url }}">{% trans "Next" %}</a>                           
+
+                <div class = "divider"></div>
+
+            <a class="btn btn-primary btn-sm" href="{{ ds_url }}">{% trans "Dataset" %}</a>
+
+            <a class="btn btn-primary btn-sm"
+                href="{{ case_url }}">{% trans "Case" %}</a>
+                
+            <div class = "divider"></div>
+            
+            <button id="save_next"
+                class="btn btn-primary btn-sm {% if not next_url %}disabled{% endif %}"
+                onclick="saveDataNext()">{% trans "Save & Next" %}
+            </button>
+
+            <div class = "divider"></div>
+
+        </div>
+        
+    </div>
+    
+    </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script>
+    let size;
+    const layer_board = $('#board');
+    let curr_layer;
+    let next_url = "{{ next_url }}";
+    let prev_url = "{{ prev_url }}";
+    let img_src = "{{ img_url }}";
+
+    class BaseLayer {
+        constructor(size) {
+            const width = size[0];
+            const height = size[1];
+
+            this.canvas = $('<canvas>');
+            this.canvas.attr('width', width);
+            this.canvas.attr('height', height);
+            this.canvas.addClass('layers');
+            this.ctx = this.canvas[0].getContext('2d');
+            layer_board.append(this.canvas);
+
+            this.width = width;
+            this.height = height;
+
+            this.saved = true;
+        }
+
+        cleanBoard() {
+            this.ctx.clearRect(0, 0, this.width, this.height);
+        }
+
+        export() {
+        }
+
+        import(data) {
+        }
+    }
+
+</script>
+
+{% block script %}
+{% endblock %}
+
+<script>
+
+    
+
+    function initBackground() {
+        const img = $('#background')[0];
+        size = [img.width, img.height];
+        $("#container").width(size[0]).height(size[1]);
+        $("#board").width(size[0]).height(size[1]);
+
+        const layer = new Layer(size);
+        layer.ctx.drawImage(img, 0, 0);
+
+        curr_layer = new Layer(size);
+        curr_layer.import();
+    }
+
+    function saveData() {
+        const data = curr_layer.export();
+        if (data) {
+            $.post({
+                url: '',
+                data: {
+                    id: {{ mask.id }},
+                    data: data,
+                    csrfmiddlewaretoken: '{{ csrf_token }}'
+                },
+                success: function (xhr, status) {
+                    if (status === 'success') {
+                        curr_layer.saved = true;
+                        alert("{% trans 'Saved Successfully!' %}");
+                    } else {
+                        alert(status);
+                    }
+                },
+                async: false
+            })
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    function saveDataNext() {
+        if (saveData()) {
+            $('#next')[0].click();
+        }
+    }
+
+    $(function () {
+        $('#background').on('load', function () {
+            initBackground();
+            zoom_toggle = true;
+            
+        }).attr('src', img_src);
+
+        window.onbeforeunload = function (e) {
+            if (!curr_layer.saved) {
+                return e.returnValue = "{% trans 'You have unsaved work!' %}";
+            }
+        }
+    })
+
+</script>
+
+
+<!-- Zoom scripts-->
+<script>
+        //used in other masking pages to determine whether zoom or drawing is enabled on board
+        zoom_toggle = true;
+        panning = false;
+
+        let maxZoom = 6;
+        let minZoom = 0.5;
+        var scale = 1;
+        
+        let pointX = 0;
+        let pointY = 0;
+        let touchStartX, touchStartY;
+        let start = { x: 0, y: 0 };
+        
+        zoom = document.getElementById('zoom');
+        let zoomInButton = document.getElementById('zoomInButton');
+        let zoomOutButton = document.getElementById('zoomOutButton');
+        zoomInButton.addEventListener('click', zoomIn);
+        zoomInButton.addEventListener('touchstart', zoomIn);
+
+        zoomOutButton.addEventListener('click', zoomOut);
+        zoomOutButton.addEventListener('touchstart', zoomOut);
+
+        //Transform function for panning
+        function setTransform() {
+            zoom.style.transform = "translate(" + pointX + "px, " + pointY + "px) scale(" + scale + ")";
+            
+        }
+        
+        //Added functions zoomIn() and zoomOut() for zoom buttons
+        // Zoom In
+        function zoomIn() {
+            scale *= 1.2;
+            scale = Math.min(scale, maxZoom);
+            setTransform();
+        }
+
+        // Zoom Out
+        function zoomOut() {
+            scale /= 1.2;
+            scale = Math.max(scale, minZoom);
+            setTransform();
+        }
+
+        //Click start event handler
+        zoom.onmousedown = function (e) {
+       
+            e.preventDefault();
+            start = { x: e.clientX - pointX, y: e.clientY - pointY };
+            panning = true;
+       
+        }
+
+        zoom.onmouseup = function (e) {
+            panning = false;
+        }
+
+        zoom.onmousemove = function (e) {
+            e.preventDefault();
+            if (!panning || !zoom_toggle) {
+                return;
+            }
+            pointX = (e.clientX - start.x);
+            pointY = (e.clientY - start.y);
+            setTransform();
+        }
+
+        // Touch start event handler
+        zoom.addEventListener('touchstart', function (e) {
+            e.preventDefault();
+            let touch = e.touches[0];
+            touchStartX = touch.clientX;
+            touchStartY = touch.clientY;
+            start = { x: touch.clientX - pointX, y: touch.clientY - pointY };
+            panning = true;
+        });
+
+        // Touch move event handler
+        zoom.addEventListener('touchmove', function (e) {
+            e.preventDefault();
+            if (!panning || !zoom_toggle) {
+                return;
+            }
+            let touch = e.touches[0];
+            pointX = (touch.clientX - start.x);
+            pointY = (touch.clientY - start.y);
+            setTransform();
+        });
+
+        zoom.addEventListener('touchend', function (e) {
+            panning = false;
+        });
+
+        //mouse wheel zoom 
+        zoom.onwheel = function (e) {
+            e.preventDefault();
+            var xs = (e.offsetX) / scale,
+                ys = (e.offsetY) / scale,
+                delta = (e.wheelDelta ? e.wheelDelta : -e.deltaY);
+
+            (delta > 0) ? (scale *= 1.2) : (scale /= 1.2);
+            
+            scale = Math.max(Math.min(scale, maxZoom), minZoom);
+
+            pointX = e.offsetX - xs * scale;
+            pointY = e.offsetY - ys * scale;
+
+            setTransform();
+        }
+
+        //testing coords in inspect
+        let screenLog = document.querySelector("#board");
+        document.addEventListener("mousemove", logKey);
+
+        function logKey(e) {
+            console.log ( `
+            Screen X/Y: ${e.screenX}, ${e.screenY}
+            Offset X/Y: ${e.offsetX}, ${e.offsetY}
+            Client X/Y: ${e.clientX}, ${e.clientY}`
+            )
+        }
+</script>
+
+</body>
+</html>

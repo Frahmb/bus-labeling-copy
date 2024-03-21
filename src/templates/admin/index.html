@@ -1,0 +1,84 @@
+{% extends "admin/base_site.html" %}
+{% load i18n static %}
+
+{% block extrastyle %}{{ block.super }}<link rel="stylesheet" type="text/css" href="{% static "admin/css/dashboard.css" %}">{% endblock %}
+
+{% block coltype %}colMS{% endblock %}
+
+{% block bodyclass %}{{ block.super }} dashboard{% endblock %}
+
+{% block breadcrumbs %}{% endblock %}
+
+{% block nav-sidebar %}{% endblock %}
+
+{% block content %}
+<div id="content-main">
+    <div id="board">
+        <p>
+            MIDA Labeling System is an open platform to label breast ultrasound images.
+            It helps generate the BI-RADS features, crop images, draw tumor boundaries,
+            and label breast tissues.
+        </p>
+        <p>
+        Click <b><a href="/static/download/MIDA_Labeling_System_Guideline.pdf">here</a></b> to see the guideline
+        </p>
+        <br>
+    </div>
+  {% include "admin/app_list.html" with app_list=app_list show_changelinks=True %}
+</div>
+{% endblock %}
+
+{% block sidebar %}
+<div id="content-related">
+    <a href="{% url 'labeling:uploading' %}" class="common_btn">
+        {% trans 'Upload Dataset' %}
+    </a>
+    <!-- <a href="/admin/auxiliary/uploadingfile/add/?_popup=1" class="common_btn">
+        {% trans 'Upload Other Dataset' %}
+    </a>
+    <a href="/admin/auxiliary/uploadingfile/" class="common_btn">
+        {% trans 'View Other Datasets' %}
+    </a> -->
+
+    <div class="module">
+        <h2>{% translate 'User statistics' %}</h2>
+        <p style="font-size: 16px">{% translate 'Total users' %}: {{ total_users }}</p>
+        <h3>{% translate 'Recent users' %}</h3>
+        <ul class="actionlist">
+            {% for user in recent_users %}
+                <li>{{ user.username|first }}** at {{ user.last_login|date:"d M, Y" }}
+                    <br> from {{ user.profile.organization|truncatechars:20 }}</li>
+            {% endfor %}
+        </ul>
+    </div>
+
+    <div class="module" id="recent-actions-module">
+        <h2>{% translate 'Recent actions' %}</h2>
+        <h3>{% translate 'My actions' %}</h3>
+            {% load log %}
+            {% get_admin_log 10 as admin_log for_user user %}
+            {% if not admin_log %}
+            <p>{% translate 'None available' %}</p>
+            {% else %}
+            <ul class="actionlist">
+            {% for entry in admin_log %}
+            <li class="{% if entry.is_addition %}addlink{% endif %}{% if entry.is_change %}changelink{% endif %}{% if entry.is_deletion %}deletelink{% endif %}">
+                {% if entry.is_deletion or not entry.get_admin_url %}
+                    {{ entry.object_repr }}
+                {% else %}
+                    <a href="{{ entry.get_admin_url }}">{{ entry.object_repr }}</a>
+                {% endif %}
+                <br>
+                {% if entry.content_type %}
+                    <span class="mini quiet">{% filter capfirst %}{{ entry.content_type.name }}{% endfilter %}</span>
+                {% else %}
+                    <span class="mini quiet">{% translate 'Unknown content' %}</span>
+                {% endif %}
+            </li>
+            {% endfor %}
+            </ul>
+            {% endif %}
+    </div>
+
+</div>
+{% endblock %}

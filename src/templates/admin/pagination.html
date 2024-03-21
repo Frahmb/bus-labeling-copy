@@ -1,0 +1,26 @@
+{% load admin_list %}
+{% load i18n %}
+<p class="paginator">
+{% if pagination_required %}
+{% for i in page_range %}
+    {% paginator_number cl i %}
+{% endfor %}
+<a href="#" onclick="goto()">go to</a>
+<input id="page" type="number" name="page" min="1" style="display: inline" form="goto_form">
+{% endif %}
+{{ cl.result_count }} {% if cl.result_count == 1 %}{{ cl.opts.verbose_name }}{% else %}{{ cl.opts.verbose_name_plural }}{% endif %}
+{% if show_all_url %}<a href="{{ show_all_url }}" class="showall">{% translate 'Show all' %}</a>{% endif %}
+
+
+{% if cl.formset and cl.result_count %}<input type="submit" name="_save" class="default" value="{% translate 'Save' %}">{% endif %}
+
+<form id="goto_form" onclick="goto()"></form>
+
+<script>
+    function goto() {
+        let page = parseInt(document.getElementById('page').value) - 1;
+        console.log(page)
+        window.location.href = '?p=' + page;
+    }
+</script>
+</p>

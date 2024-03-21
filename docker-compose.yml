@@ -1,0 +1,25 @@
+version: "3.9"
+
+services:
+  db:
+    image: postgres:13
+    environment:
+      - POSTGRES_DB=postgres
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=9Xn6vsW2eF
+    restart: always
+    volumes:
+      - ./pgdata:/var/lib/postgresql/data:rw
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -u postgres"]
+  web:
+    build: .
+    command: python manage.py runserver 0.0.0.0:80
+    restart: always
+    ports:
+      - "8080:80"
+    volumes:
+      - ./src:/code
+      - ./media:/code/media
+    depends_on:
+      - db
