@@ -119,7 +119,7 @@ class BIRADS(models.Model):
     completed = models.BooleanField(_('Completed'), default=False)
 
     diagnosis = models.BooleanField(_('Diagnosis'), default=True)   
-    
+
     def export(self):
         record = model_to_dict(self)
         record['creator'] = self.creator.username
@@ -154,8 +154,8 @@ class Masking(models.Model):
 class BaseCase(models.Model):
     id = models.AutoField(primary_key=True, verbose_name="ID")
     birads = models.ManyToManyField(BIRADS,
-                                    verbose_name=_('BIRADS'))  
-     
+                                    verbose_name=_('BIRADS'))
+
     # Tumor Type
     TYPE_CHOICE = (
         ('N', 'Normal'),
@@ -514,6 +514,20 @@ class BUSDataset(models.Model):
                                   case=case)
                 img.save()
 
+    def to_dataframe(self):
+        """
+        Convert the BUSDataset instance to a pandas DataFrame.
+        This method assumes that the dataset is stored in a CSV file
+        with a specific structure.
+        """
+        # Read the CSV file into a DataFrame
+        df = pd.read_csv(os.path.join(settings.MEDIA_ROOT, self.path, 'label.csv'))
+
+        # Perform any necessary transformations on the DataFrame
+        # ...
+
+        return df
+
     def create_db_table(self):
         # create tables
         for model in self.get_models():
@@ -575,6 +589,17 @@ class BUSDataset(models.Model):
         if self.id is not None:
             self.set_permission()
         return super().save(force_insert, force_update, using, update_fields)
+
+    def __str__(self):
+        return self.name
+
+
+
+class SplitDataset(models.Model):
+    name = models.CharField(max_length=120, unique=True)
+    original_dataset = models.ForeignKey(BUSDataset, on_delete=models.CASCADE, related_name='split_datasets')
+    percentage = models.IntegerField()
+    data = models.TextField() # Field to store the serialized dataframe
 
     def __str__(self):
         return self.name
