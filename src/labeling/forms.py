@@ -200,6 +200,11 @@ class SplittingDatasetForm(forms.Form):
         return self.cleaned_data
 
 
+
+'''Class added by Jackson Baldwin for Senior Capstone Design - Spring 2024
+Form used to retrain a model using the split datasets from the split_dataset form, as well as input selected by a user.
+Code additionally found in admin.py under "retrain", and under retrain_model.html
+'''
 class ModelRetrainForm(forms.Form):
     
     datasets = forms.ModelChoiceField(
@@ -217,9 +222,13 @@ class ModelRetrainForm(forms.Form):
         min_value=0.0,
         required=True
     )
-    
+    batch_size = forms.FloatField(
+        label='Batch Size',
+        min_value=0.0,
+        required=True
+    )
     name = forms.CharField(
-    label=_('Select a Split Dataset ID'), max_length=120, required=True)
+    label=_('Select a New Model ID'), max_length=120, required=True)
 
     def clean(self):
         cleaned_data = super().clean()
