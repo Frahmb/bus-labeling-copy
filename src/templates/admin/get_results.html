@@ -1,7 +1,7 @@
-{% extends "admin/base_site.html" %}
+{% extends "admin/index.html" %}
 {% load i18n static %}
 
-{% block title %} Generate Report | {{ site_title|default:_('Django site admin') }}{% endblock %}
+{% block title %}Get Results | {{ site_title|default:_('Django site admin') }}{% endblock %}
 {% block extrastyle %}
     {{ block.super }}
     {{ form.media }}
@@ -29,18 +29,25 @@
     </style>
 {% endblock %}
 
-
-
 {% block content %}
-<form method="post" action="{% url 'generate_report_popup' %}">
-    {% csrf_token %}
-    <select name="model_name">
-        <option value="model1">Model 1</option>
-        <option value="model2">Model 2</option>
-        <!-- Add more options as needed -->
-    </select>
-    <button type="submit">Generate Report</button>
-</form>
+    <form action="" method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+
+        <div class="form-row">
+            {{ form.datasets.label_tag }} {{ form.datasets }}
+            {{ form.datasets.errors }}
+        </div>
+
+        <div class="form-row">
+            {{ form.models.label_tag }} {{ form.models }}
+            {{ form.models.errors }}
+        </div>
+
+        <div class="form-row">
+            <input type="submit" value="Get Results">
+        </div>
+    </form>
 {% endblock %}
 
 {% block sidebar %}{% endblock %}
+

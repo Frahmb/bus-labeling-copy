@@ -5,7 +5,7 @@
 {{ block.super }}
     <li><a href="{% static 'download/MIDA_Labeling_System_Guideline.pdf' %}">
         {% trans 'Guideline' %}</a></li>
-    <li><a href="{% url 'generate_report_popup' %}">
+    <li><a href="{% url 'labeling:predict' %}">
         {% trans 'Get Results' %}</a></li>
     <li><a href="{% url 'labeling:uploading' %}">
         {% trans 'Upload Dataset' %}</a></li>

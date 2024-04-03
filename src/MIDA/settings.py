@@ -162,7 +162,7 @@ EMAIL_FROM = 'no-reply@midalab.net'
 
 STATIC_URL = '/static/'
 STATICFILES_DIRS = (str(BASE_DIR.joinpath('static')), )
-MEDIA_ROOT = '/mnt/c/BryanTestCase/bus-labeling-copy/bus-labeling-copy/src/media/datasets/'
+MEDIA_ROOT = '/mnt/c/BryanTestCase/bus-labeling-copy/media/datasets/'
 MEDIA_URL = '/media/'
 
 UPLOADING_ROOT = os.path.join(MEDIA_ROOT, 'uploading')

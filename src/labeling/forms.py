@@ -8,7 +8,7 @@ from django.utils.translation import gettext_lazy as _
 from django import forms
 from django.core.validators import FileExtensionValidator
 from django.conf import settings
-from .models import BUSDataset
+from .models import BUSDataset, ModelCheckpoint
 
 
 
@@ -254,3 +254,64 @@ class ModelRetrainForm(forms.Form):
             )
 
         return name
+
+
+class GetResultsForm(forms.Form):
+
+
+
+    # Add a new field for private databases
+    datasets = forms.ModelChoiceField(
+        #queryset=BUSDataset.objects.filter(permission = 'private'),
+        queryset=BUSDataset.objects.all(),
+        label='Select Dataset',
+        empty_label="Choose a dataset",
+        required=True, # Ensure this is set to True
+    )
+
+   # Add a new field for private databases
+    models = forms.ModelChoiceField(
+        #queryset=BUSDataset.objects.filter(permission = 'private'),
+        queryset=ModelCheckpoint.objects.all(),
+        label='Select A Model To Perform Evaluation',
+        empty_label="Choose a trained model",
+        required=True, # Ensure this is set to True
+    )
+
+
+    def clean_name(self):
+        name = self.cleaned_data.get('name')
+        if len(name) <  4:
+            raise forms.ValidationError(
+                _('Dataset name must be at least  4 characters long'))
+
+        if BUSDataset.objects.filter(name=name).count() >  0:
+            raise forms.ValidationError(
+                _('The name "%(name)" is already taken. Try picking a new one'),
+                params={'name': name}
+            )   
+
+        if not re.match(r'^\w[\w\d ]*$', name):
+            raise forms.ValidationError(
+                _('The name should only contains letters, numbers and spaces. '
+                  'The first character must be letters.')
+            )
+
+        return name
+
+    def clean(self):
+        name = self.cleaned_data.get('name')
+        if name is None:
+            return
+        cleaned_data = super().clean()
+        training_percentage = cleaned_data.get('training_percentage')
+        validation_percentage = cleaned_data.get('validation_percentage')
+        test_percentage = cleaned_data.get('test_percentage')
+
+        total_percentage = training_percentage + validation_percentage + test_percentage
+        if total_percentage !=  100:
+            raise forms.ValidationError('The sum of training, validation, and test percentages must equal  100%.')
+
+        self.cleaned_data['data_file'] = name
+        return self.cleaned_data
+
