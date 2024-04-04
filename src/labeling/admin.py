@@ -1,3 +1,5 @@
+
+import torch
 from django.shortcuts import render
 from importlib import reload, import_module
 from collections import OrderedDict
@@ -19,13 +21,17 @@ from django.utils.text import capfirst
 from django.utils.translation import gettext_lazy as _
 from user.models import UserProfile
 from .forms import UploadingDatasetForm, SplittingDatasetForm, ModelRetrainForm, GetResultsForm
-from .actions import export_self_labeled, export_all_labeled, split_tr_v_t
+from .actions import export_self_labeled, export_all_labeled, split_tr_v_t, build_dataset, predict
 from .models import (
     BaseCase, BaseImage,
     BIRADS, Masking,
     BUSDataset,
-    SplitDataset
+    SplitDataset,
+    ModelCheckpoint
 )
+
+from  .MAE_Tools import models_vit
+
 
 
 class AdminSite(admin.AdminSite):
@@ -307,52 +313,32 @@ class AdminSite(admin.AdminSite):
             if form.is_valid():
                 print("got here")
                 #selecting parts of the form we need
-                name = form.cleaned_data['name']
-                dataset_id = form.cleaned_data['private_database']
-                training_percentage = form.cleaned_data['training_percentage']
-                validation_percentage = form.cleaned_data['validation_percentage']
-                test_percentage = form.cleaned_data['test_percentage']
+                data_id = form.cleaned_data['datasets']
+                model_id = form.cleaned_data['models']
+                
 
-                # Retrieve the dataset
-                dataset = BUSDataset.objects.get(name=dataset_id)
-                dataset.load_dataset()
-                print("got here!'")
-                # split the dataset using the function defined in actions.py
-                df_input = dataset.to_dataframe()
+                pretrain_model = ModelCheckpoint.objects.get(model_name = model_id)
+                dataset_val = build_dataset(data_id)
+                
+                data_loader = torch.utils.data.DataLoader(dataset_val, batch_size = 4)
+                device = torch.device("cpu")
 
-                df_train, df_val, df_test = split_tr_v_t(df_input, training_percentage/100, validation_percentage/100, test_percentage/100)
-
-                # Serialize the dataframes to CSV format
-                training_data = df_train.to_csv(index=False)
-                validation_data = df_val.to_csv(index=False)
-                test_data = df_test.to_csv(index=False)
-
-                print("Got here???")
-
-              # Create new SplitDataset instances for each split
-                training_split = SplitDataset.objects.create(
-                    name=f'{name}_training',
-                    original_dataset=dataset,
-                    percentage=training_percentage,
-                    data=training_data
-                )
-                validation_split = SplitDataset.objects.create(
-                    name=f'{name}_validation',
-                    original_dataset=dataset,
-                    percentage=validation_percentage,
-                    data=validation_data
-                )  
-                test_split = SplitDataset.objects.create(
-                    name=f'{name}_test',
-                    original_dataset=dataset,
-                    percentage=test_percentage,
-                    data=test_data
+                model = models_vit.__dict__['vit_base_patch16'](
+                    num_classes=2,
+                    drop_path_rate=0.1,
+                    global_pool=False,
                 )
 
-                # Save the split datasets to the database
-                training_split.save()
-                validation_split.save()
-                test_split.save()
+                checkpoint = torch.load(pretrain_model.checkpoint_path, map_location = 'cpu')
+                checkpoint_model = checkpoint['model']
+
+                model.load_state_dict(checkpoint_model, strict=False)
+                model.to(device)
+
+                results = predict(data_loader, model, device)
+
+                print(results)        
+
 
                 # Redirect or render a success message
                 print("we got here")

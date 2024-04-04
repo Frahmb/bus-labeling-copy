@@ -259,7 +259,6 @@ class ModelRetrainForm(forms.Form):
 class GetResultsForm(forms.Form):
 
 
-
     # Add a new field for private databases
     datasets = forms.ModelChoiceField(
         #queryset=BUSDataset.objects.filter(permission = 'private'),
@@ -298,20 +297,4 @@ class GetResultsForm(forms.Form):
             )
 
         return name
-
-    def clean(self):
-        name = self.cleaned_data.get('name')
-        if name is None:
-            return
-        cleaned_data = super().clean()
-        training_percentage = cleaned_data.get('training_percentage')
-        validation_percentage = cleaned_data.get('validation_percentage')
-        test_percentage = cleaned_data.get('test_percentage')
-
-        total_percentage = training_percentage + validation_percentage + test_percentage
-        if total_percentage !=  100:
-            raise forms.ValidationError('The sum of training, validation, and test percentages must equal  100%.')
-
-        self.cleaned_data['data_file'] = name
-        return self.cleaned_data
 

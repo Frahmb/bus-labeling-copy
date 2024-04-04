@@ -1,13 +1,23 @@
 import os
 import zipfile
 import json
+import torch
+import PIL
+from PIL import Image
 from io import BytesIO
 from django.http import HttpResponse
 from django.conf import settings
 from django.utils.translation import gettext_lazy as _
 import pandas as pd
 from sklearn.model_selection import train_test_split
-
+from .models import (
+    BUSDataset
+)
+from torchvision import datasets, transforms
+from timm.data import create_transform
+from timm.data.constants import IMAGENET_DEFAULT_MEAN, IMAGENET_DEFAULT_STD
+from .MAE_Tools.pos_embed import interpolate_pos_embed
+from .MAE_Tools import misc
 
 with open(os.path.join(os.path.dirname(__file__), 'Label file README.txt')) as f:
     README = f.read()
@@ -94,8 +104,62 @@ def split_tr_v_t(df_input, frac_train=0.6, frac_val=0.15, frac_test=0.25, random
 
     return df_train, df_val, df_test
 
+def build_dataset(data_id):
+    mean = IMAGENET_DEFAULT_MEAN
+    std = IMAGENET_DEFAULT_STD
+    # eval transform
+    bus_dataset = BUSDataset.objects.get(name=data_id)
+    bus_dataset.load_dataset()
 
-export_self_labeled.short_description = _('Export your labels')
+    crop_pct = 224 / 256
+    size = int(224 / crop_pct)
+    t = []
+    t.append(
+        transforms.Resize(size, interpolation=PIL.Image.BICUBIC),  # to maintain same ratio w.r.t. 224 images
+    )
+    t.append(transforms.CenterCrop(224))
+
+    t.append(transforms.ToTensor())
+    t.append(transforms.Normalize(mean, std))
+    transform = transforms.Compose(t)
+
+    root = os.path.join(bus_dataset.path)
+    dataset = datasets.ImageFolder(root, transform=transform)
+
+    return dataset
+
+
+def predict(data_loader, model, device):
+
+    criterion = torch.nn.CrossEntropyLoss()
+
+    metric_logger = misc.MetricLogger(delimiter=" ")
+    header = 'Test:'
+
+    # switch to evaluation mode
+    model.eval()
+
+    all_predictions = []
+
+    for batch in metric_logger.log_every(data_loader, 10, header):
+        images = batch[0]
+        images = images.to(device, non_blocking=True)
+
+        # compute output
+        with torch.cuda.amp.autocast():
+            output = model(images)
+
+        _, predicted_labels = torch.max(output, 1)
+        all_predictions.extend(predicted_labels.cpu().numpy())
+
+    # gather the stats from all processes
+    metric_logger.synchronize_between_processes()
+
+    return all_predictions
+
+
+
+
 
 
 def export_all_labeled(modeladmin, request, queryset):
