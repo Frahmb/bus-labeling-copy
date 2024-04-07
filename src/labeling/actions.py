@@ -123,8 +123,10 @@ def build_dataset(data_id):
     t.append(transforms.Normalize(mean, std))
     transform = transforms.Compose(t)
 
-    root = os.path.join(bus_dataset.path)
-    dataset = datasets.ImageFolder(root, transform=transform)
+    root = os.path.join(bus_dataset.path, 'images')
+    newroot = os.path.join(settings.MEDIA_ROOT, root)
+
+    dataset = datasets.ImageFolder(newroot, transform=transform)
 
     return dataset
 
