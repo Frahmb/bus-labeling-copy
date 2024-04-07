@@ -613,7 +613,7 @@ class ModelCheckpoint(models.Model):
 
     model_name = models.CharField(max_length=255, unique=True)
     model_type = models.CharField(max_length=3, choices=MODEL_TYPE_CHOICES)
-    checkpoint_path = models.CharField(max_length=255)
+    checkpoint_name = models.CharField(max_length=255)
 
     def __str__(self):
         return self.model_name

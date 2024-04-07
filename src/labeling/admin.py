@@ -1,5 +1,6 @@
 
 import torch
+import os
 from django.shortcuts import render
 from importlib import reload, import_module
 from collections import OrderedDict
@@ -329,7 +330,9 @@ class AdminSite(admin.AdminSite):
                     global_pool=False,
                 )
 
-                checkpoint = torch.load(pretrain_model.checkpoint_path, map_location = 'cpu')
+                checkpoint_local = os.path.join(settings.CHECKPOINT_ROOT, pretrain_model.checkpoint_name)
+
+                checkpoint = torch.load(checkpoint_local, map_location = 'cpu')
                 checkpoint_model = checkpoint['model']
 
                 model.load_state_dict(checkpoint_model, strict=False)
@@ -345,7 +348,6 @@ class AdminSite(admin.AdminSite):
                 return HttpResponseRedirect(reverse('labeling:index'))
             else:
                 print("form is invalid") 
-            # Split the dataset into training, validation, and test datasets
         else:
             print("no dice")
             form = GetResultsForm()
