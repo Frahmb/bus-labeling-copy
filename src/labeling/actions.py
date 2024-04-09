@@ -109,7 +109,8 @@ def build_dataset(data_id):
     std = IMAGENET_DEFAULT_STD
     # eval transform
     bus_dataset = BUSDataset.objects.get(name=data_id)
-    bus_dataset.load_dataset()
+   
+    # bus_dataset.load_dataset()  // unnecessary
 
     crop_pct = 224 / 256
     size = int(224 / crop_pct)
