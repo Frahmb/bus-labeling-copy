@@ -617,3 +617,24 @@ class ModelCheckpoint(models.Model):
 
     def __str__(self):
         return self.model_name
+
+    
+    # Should add model field in future when multiple models can be used to generate a diagnosis
+    # Model field not needed for now because only MAE model implemented
+class Diagnosis(models.Model):
+    #Define fields for diagnosis information
+    id = models.AutoField(primary_key=True, verbose_name="ID")
+    DIAGNOSIS_CHOICES = [
+        (0, _('Malignant')),
+        (1, _('Benign'))
+    ]
+
+    diagnosis = models.IntegerField(_('Diagnosis'),
+        choices=DIAGNOSIS_CHOICES,
+        null=True)        
+
+    dataset_name = models.CharField(default='', max_length=128)
+   
+    case_id = models.IntegerField(blank=True)
+    
+

@@ -341,7 +341,61 @@ class AdminSite(admin.AdminSite):
                 results = predict(data_loader, model, device)
 
                 print(results)        
+                # Added to add results to Diagnosis model
+                # Filtering instances by dataset_name
+                # Grab only those in the current dataset being used
+                specific_diagnosis_instances = Diagnosis.objects.filter(dataset_name=data_id)
 
+                # Retrieving the first instance from the filtered queryset
+                if specific_diagnosis_instances.exists():
+
+                    #record size of old dataset
+                    old_size = specific_diagnosis_instances.count()
+                    print("Overwriting Diagnosis for Dataset:", data_id.name)
+
+                    for index, diagnosis_value in enumerate(results):
+                        
+                        if index < old_size:
+                            
+                            # Grab the single Diagnosis instance
+                            diagnosis_instance = specific_diagnosis_instances[index]
+
+                            # Update the diagnosis value and dataset name
+                            diagnosis_instance.diagnosis = diagnosis_value
+                            diagnosis_instance.dataset_name = data_id.name
+
+                            # Case_id starts at 1 to match obj.id in diagnosis 
+                            diagnosis_instance.case_id = index + 1
+                            
+                            # Save the instance back to the database
+                            diagnosis_instance.save()   
+                        else:
+                            # Save the single instance if dataset is now larger 
+                            diagnosis_instance = Diagnosis(
+                                diagnosis = diagnosis_value,
+                                dataset_name = data_id.name,
+
+                                # Case_id starts at 1 to match obj.id in diagnosis
+                                case_id = index + 1                      
+                            )
+                            diagnosis_instance.save()
+
+                # Create a new Diagnosis instance
+                else:
+
+                    print("No diagnosis instances found for dataset", data_id)
+                    print("Making new diagnosis")
+                    for index, diagnosis_value in enumerate(results):  
+                        
+                        diagnosis_instance = Diagnosis(
+                            diagnosis = diagnosis_value,
+                            dataset_name = data_id,
+
+                            # Case_id starts at 1 to match obj.id in diagnosis
+                            case_id = index + 1                      
+                        )
+                        diagnosis_instance.save()
+                        
 
                 # Redirect or render a success message
                 print("we got here")
@@ -620,15 +674,54 @@ class BaseCaseAdmin(admin.ModelAdmin):
         return self.get_remaining(obj, 'tissue')
 
     remaining_tissue_mask.short_description = _('Remaining Tissue Mask')
+    def diagnosis(self,obj):
 
-    def diagnosis(self, obj):
+        # Matches the current obj.id which is the current image entry in the dataset
+        # Starts at whatever the first entry is on the current page
+        # There are 25 image entries per page, starts at 1 for page 1,
+        # 26 for page 2.. etc
+        # This should match with Diagnosis.case_id set in predict()
+        img_index = obj.id
+
+        # Added to grab index for instances
+        # -1 to start at 0 for indexing query object        
+        diagnosis_index = img_index - 1
+
+        #grab name of current dataset opened
+        ds = self.model._meta.verbose_name
+
+        #set default diagnosis value
+        diagnosis = None
+        
+        #create query set of instances of this dataset
+        # Index starts at 0 goes to size of dataset - 1
+        specific_diagnosis_instances = Diagnosis.objects.filter(dataset_name=ds)
+        
+        # Check to make sure index does not go out of range
+        size = len(specific_diagnosis_instances)
+ 
+
+        # If Diagnosis exists assgin values to diganosis field
+        if specific_diagnosis_instances.exists() and diagnosis_index < size:
+
+            # Check if case_id assigned to Diagnosis obj is equal to obj.id for current object
+            if specific_diagnosis_instances[diagnosis_index].case_id == img_index:
+                
+                # Set diagnosis value to instance of Diagnosis.diagnosis
+                diagnosis = specific_diagnosis_instances[diagnosis_index].get_diagnosis_display()
+  
+            else:
+                print("No diagnosis for obj:",img_index)
+  
+        # No Diagnosis objects found for dataset
+        # Returns None
+        else:
+            print("No diagnosis found for dataset obj", img_index)
+
+        return diagnosis
        
-        # Get the type choice value for the current object
-        type_choice = dict(BaseCase.TYPE_CHOICE).get(obj.tumor_type, 'UNKNOWN')
-        return type_choice
     diagnosis.short_description = _('Diagnosis')
-
-
+    
     def changelist_view(self, request, extra_context=None):
         ctx = {
             'image_model_name': self.model._image_model._meta.model_name.lower(),
