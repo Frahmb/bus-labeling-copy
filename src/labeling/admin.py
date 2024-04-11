@@ -28,7 +28,8 @@ from .models import (
     BIRADS, Masking,
     BUSDataset,
     SplitDataset,
-    ModelCheckpoint
+    ModelCheckpoint,
+    Diagnosis
 )
 
 from  .MAE_Tools import models_vit
