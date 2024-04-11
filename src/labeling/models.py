@@ -116,9 +116,7 @@ class BIRADS(models.Model):
                                   choices=BIRADS_ASSESSMENT_CHOICE)
     creator = models.ForeignKey(User, on_delete=models.CASCADE,
                                 verbose_name=_('Creator'))
-    completed = models.BooleanField(_('Completed'), default=False)
-
-    diagnosis = models.BooleanField(_('Diagnosis'), default=True)   
+    completed = models.BooleanField(_('Completed'), default=False) 
 
     def export(self):
         record = model_to_dict(self)
