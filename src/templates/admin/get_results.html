@@ -26,11 +26,15 @@
             width:  100%;
             box-sizing: border-box;
         }
+
+        .loading {
+            cursor: wait !important; /* Change cursor to loading spinner */
+        }
     </style>
 {% endblock %}
 
 {% block content %}
-    <form action="" method="post" enctype="multipart/form-data">
+    <form id="get-results-form" action="" method="post" enctype="multipart/form-data">
         {% csrf_token %}
 
         <div class="form-row">
@@ -47,6 +51,22 @@
             <input type="submit" value="Get Results">
         </div>
     </form>
+    <div id="loading-spinner" style="display: none;">
+
+    </div>
+    <script>
+
+        document.getElementById("get-results-form").addEventListener("submit", function() {
+            
+            addLoadingClass();
+        });
+
+        function addLoadingClass() {
+            document.body.classList.add('loading');
+        }
+
+
+    </script>
 {% endblock %}
 
 {% block sidebar %}{% endblock %}

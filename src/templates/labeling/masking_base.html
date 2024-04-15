@@ -556,17 +556,6 @@
             setTransform();
         }
 
-        //testing coords in inspect
-        let screenLog = document.querySelector("#board");
-        document.addEventListener("mousemove", logKey);
-
-        function logKey(e) {
-            console.log ( `
-            Screen X/Y: ${e.screenX}, ${e.screenY}
-            Offset X/Y: ${e.offsetX}, ${e.offsetY}
-            Client X/Y: ${e.clientX}, ${e.clientY}`
-            )
-        }
 </script>
 
 </body>
