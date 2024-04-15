@@ -299,7 +299,8 @@ class AdminSite(admin.AdminSite):
             'title': 'Upload Dataset',
             'form': form
         }
-
+        print("REQUEST:",request)
+        print("CONTEXT:",context)
         return render(request, 'admin/upload_dataset.html', context)
     
     def predict(self, request):
@@ -341,12 +342,18 @@ class AdminSite(admin.AdminSite):
 
                 results = predict(data_loader, model, device)
 
-                print(results)        
+                print(results)     
+                """
+       
                 # Added to add results to Diagnosis model
-                # Filtering instances by dataset_name
+                # Filtering instances by dataset_name and creator
                 # Grab only those in the current dataset being used
-                specific_diagnosis_instances = Diagnosis.objects.filter(dataset_name=data_id)
-
+                """                
+                #specific_diagnosis_instances = Diagnosis.objects.filter(dataset_name=data_id)
+                specific_diagnosis_instances = (Diagnosis.objects.filter(dataset_name=data_id) 
+                                                & Diagnosis.objects.filter(creator=request.user)
+                                                )
+                
                 # Retrieving the first instance from the filtered queryset
                 if specific_diagnosis_instances.exists():
 
@@ -361,24 +368,29 @@ class AdminSite(admin.AdminSite):
                             # Grab the single Diagnosis instance
                             diagnosis_instance = specific_diagnosis_instances[index]
 
-                            # Update the diagnosis value and dataset name
+                            # Update the diagnosis value, dataset name, and creator
                             diagnosis_instance.diagnosis = diagnosis_value
                             diagnosis_instance.dataset_name = data_id.name
+                            diagnosis_instance.creator = request.user
 
                             # Case_id starts at 1 to match obj.id in diagnosis 
                             diagnosis_instance.case_id = index + 1
                             
                             # Save the instance back to the database
-                            diagnosis_instance.save()   
+                            diagnosis_instance.save()  
+
                         else:
+
                             # Save the single instance if dataset is now larger 
                             diagnosis_instance = Diagnosis(
                                 diagnosis = diagnosis_value,
                                 dataset_name = data_id.name,
+                                creator = request.user,
 
                                 # Case_id starts at 1 to match obj.id in diagnosis
                                 case_id = index + 1                      
                             )
+
                             diagnosis_instance.save()
 
                 # Create a new Diagnosis instance
@@ -391,10 +403,12 @@ class AdminSite(admin.AdminSite):
                         diagnosis_instance = Diagnosis(
                             diagnosis = diagnosis_value,
                             dataset_name = data_id,
-
+                            creator = request.user,
+                            
                             # Case_id starts at 1 to match obj.id in diagnosis
                             case_id = index + 1                      
                         )
+
                         diagnosis_instance.save()
                         
 
@@ -423,7 +437,7 @@ class AdminSite(admin.AdminSite):
                 name = form.cleaned_data['name']
                 data_file = form.cleaned_data['data_file']
                 permission = form.cleaned_data['public_permission']
-
+                
                 ds = BUSDataset(name=name,
                                 creator=request.user,
                                 permission=permission,
@@ -675,17 +689,21 @@ class BaseCaseAdmin(admin.ModelAdmin):
         return self.get_remaining(obj, 'tissue')
 
     remaining_tissue_mask.short_description = _('Remaining Tissue Mask')
-    def diagnosis(self,obj):
 
+    def diagnosis(self,obj):
+        """
         # Matches the current obj.id which is the current image entry in the dataset
         # Starts at whatever the first entry is on the current page
         # There are 25 image entries per page, starts at 1 for page 1,
         # 26 for page 2.. etc
-        # This should match with Diagnosis.case_id set in predict()
+        # img_index should match with Diagnosis.case_id set in predict()
+        """
         img_index = obj.id
 
+        """
         # Added to grab index for instances
-        # -1 to start at 0 for indexing query object        
+        # -1 to start at 0 for indexing query object
+        """
         diagnosis_index = img_index - 1
 
         #grab name of current dataset opened
@@ -693,10 +711,13 @@ class BaseCaseAdmin(admin.ModelAdmin):
 
         #set default diagnosis value
         diagnosis = None
-        
-        #create query set of instances of this dataset
-        # Index starts at 0 goes to size of dataset - 1
-        specific_diagnosis_instances = Diagnosis.objects.filter(dataset_name=ds)
+
+        """       
+        # Create query set of instances of this dataset for this User
+        # Index starts at 0 goes to size of dataset - 1    
+        #specific_diagnosis_instances = Diagnosis.objects.filter(dataset_name=ds)
+        """
+        specific_diagnosis_instances = Diagnosis.objects.filter(dataset_name=ds) & Diagnosis.objects.filter(creator=self.user)
         
         # Check to make sure index does not go out of range
         size = len(specific_diagnosis_instances)
@@ -722,6 +743,7 @@ class BaseCaseAdmin(admin.ModelAdmin):
         return diagnosis
        
     diagnosis.short_description = _('Diagnosis')
+
     
     def changelist_view(self, request, extra_context=None):
         ctx = {

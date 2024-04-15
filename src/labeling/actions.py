@@ -11,7 +11,8 @@ from django.utils.translation import gettext_lazy as _
 import pandas as pd
 from sklearn.model_selection import train_test_split
 from .models import (
-    BUSDataset
+    BUSDataset,
+    CustomImageFolder
 )
 from torchvision import datasets, transforms
 from timm.data import create_transform
@@ -124,10 +125,12 @@ def build_dataset(data_id):
     t.append(transforms.Normalize(mean, std))
     transform = transforms.Compose(t)
 
-    root = os.path.join(bus_dataset.path, 'images')
+    root = os.path.join(bus_dataset.path)
     newroot = os.path.join(settings.MEDIA_ROOT, root)
 
-    dataset = datasets.ImageFolder(newroot, transform=transform)
+    #dataset = datasets.ImageFolder(newroot, transform=transform)
+
+    dataset = CustomImageFolder(newroot, transform=transform)
 
     return dataset
 

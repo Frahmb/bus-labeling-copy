@@ -14,6 +14,7 @@ from django.db import connection
 from django.utils.translation import gettext_lazy as _, gettext
 from django.contrib.auth.management import create_permissions
 import pandas as pd
+from torchvision import datasets
 
 
 class BIRADSMarginChoice(models.Model):
@@ -539,7 +540,7 @@ class BUSDataset(models.Model):
         # grant the creator all permissions
         self.creator.user_permissions.add(*self.get_permissions('case'))
         self.creator.user_permissions.add(*self.get_permissions('image'))
-
+        print(self)
         # set permissions for other groups
         self.set_permission()
 
@@ -615,7 +616,6 @@ class ModelCheckpoint(models.Model):
 
     def __str__(self):
         return self.model_name
-
     
     # Should add model field in future when multiple models can be used to generate a diagnosis
     # Model field not needed for now because only MAE model implemented
@@ -635,4 +635,23 @@ class Diagnosis(models.Model):
    
     case_id = models.IntegerField(blank=True)
     
+    creator = models.ForeignKey(User, on_delete=models.CASCADE, null=True,
+                                verbose_name=_('Creator'))
+    
 
+class CustomImageFolder(datasets.ImageFolder):
+    def find_classes(self, directory):
+        """
+        Overriding find_classes method to look for a file named "images" in the directory.
+        """
+        classes = []
+        class_to_idx = {}
+        if os.path.exists(os.path.join(directory, "images")):
+            classes.append("images")
+            class_to_idx["images"] = 0
+        else:
+            # If no classes found, add a placeholder class
+            classes.append("placeholder")
+            class_to_idx["placeholder"] = 0
+        return classes, class_to_idx
+    
