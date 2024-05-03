@@ -211,6 +211,7 @@
                 start_draw.toggle();
                 end_draw.toggle();
                 curr_layer.startDraw();
+                $('#zoom').addClass('drawing-cursor');
             })
 
             end_draw.click(function () {
@@ -218,6 +219,7 @@
                 start_draw.toggle();
                 end_draw.toggle();
                 curr_layer.endDraw();
+                $('#zoom').removeClass('drawing-cursor');
             })
 
             $('#undo').click(function () {

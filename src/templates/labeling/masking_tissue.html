@@ -106,6 +106,7 @@
             }
 
             startDraw(index) {
+                $('#zoom').addClass('drawing-cursor');
                 this.endDraw();
                 this.current_draw_index = index;
                 this.canvas.on('mousedown touchstart', e => this.startDrawEvent(e));
@@ -117,6 +118,7 @@
 
             drawStroke() {
                 zoom_toggle = false;
+                
                 for (let i = 0; i < this.strokes.length; i++) {
                     let color = this.strokes_color[i];
                     const stroke = this.strokes[i];
@@ -159,6 +161,7 @@
                     }
                 }
                 zoom_toggle = true;
+                $('#zoom').removeClass('drawing-cursor');
                 return JSON.stringify(this.strokes)
             }
 
@@ -192,6 +195,7 @@
             $('#end_draw').click(function(){
                 curr_layer.endDraw();
                 zoom_toggle = true;
+                $('#zoom').removeClass('drawing-cursor');
             })
         });
     </script>

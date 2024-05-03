@@ -92,8 +92,8 @@
             }
 
             .scrollable-content {
-                
                 overflow: hidden;
+                /*overflow: hidden;*/
                 position: relative;
                 width: 100%;
                 height: 100%;
@@ -164,6 +164,10 @@
             }
             .zoom_button:hover {
                 background-color: #006ee4; 
+            }
+            
+            #zoom.drawing-cursor {
+                cursor: crosshair;
             }
 
         {% endblock %}
@@ -452,9 +456,9 @@
         panning = false;
 
         let maxZoom = 6;
-        let minZoom = 0.5;
+        let minZoom = 0.9;
         var scale = 1;
-        
+        var oldscale = 1;
         let pointX = 0;
         let pointY = 0;
         let touchStartX, touchStartY;
@@ -468,7 +472,7 @@
 
         zoomOutButton.addEventListener('click', zoomOut);
         zoomOutButton.addEventListener('touchstart', zoomOut);
-
+        scollable = document.getElementById('scrollable-content');
         //Transform function for panning
         function setTransform() {
             zoom.style.transform = "translate(" + pointX + "px, " + pointY + "px) scale(" + scale + ")";
@@ -480,6 +484,7 @@
         function zoomIn() {
             scale *= 1.2;
             scale = Math.min(scale, maxZoom);
+            
             setTransform();
         }
 
@@ -542,18 +547,38 @@
         //mouse wheel zoom 
         zoom.onwheel = function (e) {
             e.preventDefault();
-            var xs = (e.offsetX) / scale,
-                ys = (e.offsetY) / scale,
-                delta = (e.wheelDelta ? e.wheelDelta : -e.deltaY);
 
+            // Determine the amount of scroll delta
+            var delta = (e.wheelDelta ? e.wheelDelta : -e.deltaY);
+
+            var oldScale = scale;
+
+            // Determine whether to zoom in or out based on the scroll direction
             (delta > 0) ? (scale *= 1.2) : (scale /= 1.2);
-            
+
+            // Ensure that the scale remains within the defined bounds
             scale = Math.max(Math.min(scale, maxZoom), minZoom);
 
-            pointX = e.offsetX - xs * scale;
-            pointY = e.offsetY - ys * scale;
+            // Calculate the new pointX and pointY based on the cursor position and the change in scale
+            // Needs work
+            //pointX = e.offsetX - (e.offsetX - pointX) * (scale / oldScale);
+            //pointY = e.offsetY - (e.offsetY - pointY) * (scale / oldScale);
+
 
             setTransform();
+        }
+        
+                //testing coords in inspect
+        let screenLog = document.querySelector("#board");
+        document.addEventListener("mousemove", logKey);
+
+        function logKey(e) {
+            console.log ( `
+            Screen X/Y: ${e.screenX}, ${e.screenY}
+            Offset X/Y: ${e.offsetX}, ${e.offsetY}
+            Client X/Y: ${e.clientX}, ${e.clientY}
+`
+            )
         }
 
 </script>

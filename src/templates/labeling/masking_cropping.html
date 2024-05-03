@@ -112,6 +112,7 @@
                 end_crop.toggle();
                 curr_layer.startCrop();
                 zoom_toggle = false;
+                $('#zoom').addClass('drawing-cursor');
             })
 
             end_crop.click(function () {
@@ -119,6 +120,7 @@
                 end_crop.toggle();
                 curr_layer.endCrop();
                 zoom_toggle = true;
+                $('#zoom').removeClass('drawing-cursor');
             })
         });
     </script>
