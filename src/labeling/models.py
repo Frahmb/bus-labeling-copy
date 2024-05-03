@@ -623,8 +623,8 @@ class Diagnosis(models.Model):
     #Define fields for diagnosis information
     id = models.AutoField(primary_key=True, verbose_name="ID")
     DIAGNOSIS_CHOICES = [
-        (0, _('Malignant')),
-        (1, _('Benign'))
+        (0, _('Benign')),
+        (1, _('Malignant'))
     ]
 
     diagnosis = models.IntegerField(_('Diagnosis'),
@@ -638,7 +638,7 @@ class Diagnosis(models.Model):
     creator = models.ForeignKey(User, on_delete=models.CASCADE, null=True,
                                 verbose_name=_('Creator'))
     
-
+    
 class CustomImageFolder(datasets.ImageFolder):
     def find_classes(self, directory):
         """
