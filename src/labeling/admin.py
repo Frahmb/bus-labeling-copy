@@ -187,6 +187,13 @@ class AdminSite(admin.AdminSite):
         )
         return urls 
     
+    '''Split Dataset Handler - MedAI - 2024
+
+    splits datasets and adds the split dataset to a separate class
+
+    interacts with actions.py and models.py (found in src/labeling)
+
+    '''  
     def splitting(self, request):
        # app_dict = self._build_app_dict(request, label='labeling')
         
@@ -198,7 +205,6 @@ class AdminSite(admin.AdminSite):
                 'form': form
                 }
             if form.is_valid():
-                print("got here")
                 #selecting parts of the form we need
                 name = form.cleaned_data['name']
                 dataset_id = form.cleaned_data['private_database']
@@ -209,7 +215,7 @@ class AdminSite(admin.AdminSite):
                 # Retrieve the dataset
                 dataset = BUSDataset.objects.get(name=dataset_id)
                 dataset.load_dataset()
-                print("got here!'")
+
                 # split the dataset using the function defined in actions.py
                 df_input = dataset.to_dataframe()
 
@@ -220,7 +226,7 @@ class AdminSite(admin.AdminSite):
                 validation_data = df_val.to_csv(index=False)
                 test_data = df_test.to_csv(index=False)
 
-                print("Got here???")
+    
 
               # Create new SplitDataset instances for each split
                 training_split = SplitDataset.objects.create(
@@ -302,7 +308,15 @@ class AdminSite(admin.AdminSite):
         print("REQUEST:",request)
         print("CONTEXT:",context)
         return render(request, 'admin/upload_dataset.html', context)
-    
+
+
+    '''"Get Results" Handler - MedAI - 2024
+
+    Calculates the diagnosis of the selected dataset with the selected checkpoint
+
+    interacts with actions.py and models.py (found in src/labeling)
+
+    '''  
     def predict(self, request):
        # app_dict = self._build_app_dict(request, label='labeling')
         
@@ -314,8 +328,7 @@ class AdminSite(admin.AdminSite):
                 'form': form
                 }
             if form.is_valid():
-                print("got here")
-                #selecting parts of the form we need
+                #selecting parts of the form we need - form validation
                 data_id = form.cleaned_data['datasets']
                 model_id = form.cleaned_data['models']
                 
@@ -332,6 +345,8 @@ class AdminSite(admin.AdminSite):
                     global_pool=False,
                 )
 
+                #gets the name of the checkpoint and appends it to the checkpoint root specified in settings
+                #check the bus-labeling README   for setup if this is failing
                 checkpoint_local = os.path.join(settings.CHECKPOINT_ROOT, pretrain_model.checkpoint_name)
 
                 checkpoint = torch.load(checkpoint_local, map_location = 'cpu')
@@ -429,6 +444,20 @@ class AdminSite(admin.AdminSite):
         }
         return render(request, 'admin/get_results.html', context)
 
+
+
+    '''Retrain Model Handler - MedAI - 2024
+
+    WIP - Framework for Validation
+
+    Enables users to create custom checkpoints based on personalized parameters and a split dataset.
+    ...this custom checkpoint will be saved under a new ID and can be accessed via the “Get Results” API
+    ...allows users to check the accuracy of their model checkpoint compared to MedAIs official checkpoint.
+
+    
+    interacts with actions.py and models.py (found in src/labeling)
+
+    '''  
 
     def retrain(self, request):
         if request.method == 'POST':

@@ -55,6 +55,7 @@ def export_self_labeled(modeladmin, request, queryset):
 
 def split_tr_v_t(df_input, frac_train=0.6, frac_val=0.15, frac_test=0.25, random_state=None):
     '''
+
     Splits a Pandas dataframe into three subsets (train, val, and test)
     following fractional ratios provided by the user, where each subset is
     stratified by the values in a specific column (that is, each subset has
@@ -105,6 +106,11 @@ def split_tr_v_t(df_input, frac_train=0.6, frac_val=0.15, frac_test=0.25, random
 
     return df_train, df_val, df_test
 
+
+
+#build_dataset...added by MedAI - Spring 2024
+#nsures that the images are in the correct cropping and that the dataset is properly "wrapped" to communicate with the model
+
 def build_dataset(data_id):
     mean = IMAGENET_DEFAULT_MEAN
     std = IMAGENET_DEFAULT_STD
@@ -126,15 +132,18 @@ def build_dataset(data_id):
     transform = transforms.Compose(t)
 
     root = os.path.join(bus_dataset.path)
-    newroot = os.path.join(settings.MEDIA_ROOT, root)
+    connecting_path = os.path.join(settings.MEDIA_ROOT, root) 
 
     #dataset = datasets.ImageFolder(newroot, transform=transform)
 
-    dataset = CustomImageFolder(newroot, transform=transform)
+    #interacts with "CustomImageFolder class" found in models.py
+    dataset = CustomImageFolder(connecting_path, transform=transform)
 
     return dataset
 
 
+#prediction task made by MedAI 
+#evaluates the set of images as a 0 or a 1. 0=Benign, 1=Malignant
 def predict(data_loader, model, device):
 
     criterion = torch.nn.CrossEntropyLoss()
@@ -149,7 +158,7 @@ def predict(data_loader, model, device):
 
     for batch in metric_logger.log_every(data_loader, 10, header):
         images = batch[0]
-        images = images.to(device, non_blocking=True)
+        images = images.to(device, non_blocking=True)  
 
         # compute output
         with torch.cuda.amp.autocast():
