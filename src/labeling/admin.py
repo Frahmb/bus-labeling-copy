@@ -191,6 +191,7 @@ class AdminSite(admin.AdminSite):
 
     splits datasets and adds the split dataset to a separate class
 
+    HTML template found in bus-labeling-copy/src/templates/admin/split_dataset
     interacts with actions.py and models.py (found in src/labeling)
 
     '''  
@@ -314,6 +315,8 @@ class AdminSite(admin.AdminSite):
 
     Calculates the diagnosis of the selected dataset with the selected checkpoint
 
+
+    HTML template found in bus-labeling-copy/src/templates/admin/get_results
     interacts with actions.py and models.py (found in src/labeling)
 
     '''  
@@ -455,7 +458,8 @@ class AdminSite(admin.AdminSite):
     ...allows users to check the accuracy of their model checkpoint compared to MedAIs official checkpoint.
 
     
-    interacts with actions.py and models.py (found in src/labeling)
+    interacts with actions.py and models.py (found in src/labeling) 
+    HTML template found in bus-labeling-copy/src/templates/admin/retrain_model
 
     '''  
 
